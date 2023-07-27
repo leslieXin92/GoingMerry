@@ -1,11 +1,9 @@
-// 注册接口
 import Router from 'koa-router'
+import { verifyLogin } from '@/middleware'
+import { login } from '@/controller'
 
 const userRouter = new Router({ prefix: '/user' })
 
-userRouter.get('/', async (ctx) => {
-  const { id } = ctx.params
-  ctx.body = { id, name: 'John Doe', email: 'john@example.com' }
-})
+userRouter.post('/login', verifyLogin, login)
 
 export default userRouter
