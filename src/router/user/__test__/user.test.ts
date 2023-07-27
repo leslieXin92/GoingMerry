@@ -1,5 +1,5 @@
 import { useTest } from '@/utils'
-import { LoginParams } from '@/types'
+import type { LoginParams } from '@/types'
 
 describe('User', () => {
   const testFn = useTest<LoginParams>('/user/login', 'post')

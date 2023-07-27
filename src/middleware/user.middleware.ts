@@ -1,6 +1,6 @@
-import { Next } from 'koa'
-import { CustomContext, LoginParams } from '@/types'
-import { getUserInfoByName } from '@/service/user.service'
+import { getUserInfoByName } from '@/service'
+import type { Next } from 'koa'
+import type { CustomContext, LoginParams } from '@/types'
 
 export const verifyLogin = async (ctx: CustomContext<LoginParams>, next: Next) => {
   const { username, password } = ctx.request.body

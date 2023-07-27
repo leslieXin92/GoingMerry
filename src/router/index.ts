@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import Koa from 'koa'
-import Router from 'koa-router'
+import type Router from 'koa-router'
 
 const useRoutes = (app: Koa) => {
   fs.readdirSync(__dirname).forEach((module) => {

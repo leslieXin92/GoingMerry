@@ -1,5 +1,5 @@
-import { errorType, ErrorTypeKey } from '@/constants/errorType'
-import { Context } from 'koa'
+import { errorType, ErrorTypeKey } from '@/constants'
+import type { Context } from 'koa'
 
 const errorHandler = (error: Error, ctx: Context) => {
   ctx.status = errorType[error.message as ErrorTypeKey]?.status ?? 500

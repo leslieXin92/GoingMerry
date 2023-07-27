@@ -1,6 +1,6 @@
 import Koa from 'koa'
-import useRoutes from '@/router'
 import bodyParse from 'koa-bodyparser'
+import useRoutes from '@/router'
 import errorHandler from './errorHandler'
 
 const app = new Koa()

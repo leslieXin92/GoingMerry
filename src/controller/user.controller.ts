@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
-import { Context } from 'koa'
 import { PRIVATE_KEY } from '@/app/config'
-import { LoginResult } from '@/types'
+import type { Context } from 'koa'
+import type { LoginResult } from '@/types'
 
 export const login = async (ctx: Context): Promise<LoginResult> => {
   const { id, username } = ctx.user
