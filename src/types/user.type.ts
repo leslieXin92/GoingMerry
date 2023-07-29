@@ -8,3 +8,9 @@ export interface LoginResult {
   username: string
   token: string
 }
+
+export interface RegisterParams {
+  username: string
+  password: string
+  confirmPassword: string
+}

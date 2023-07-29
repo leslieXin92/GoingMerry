@@ -1,9 +1,12 @@
 import Router from 'koa-router'
-import { verifyLogin } from '@/middleware'
-import { login } from '@/controller'
+import { verifyLoginUserInfo, verifyRegisterUserInfo, encryptPassword } from '@/middleware'
+import { login, register } from '@/controller'
+import type { CustomContext } from '@/types'
 
-const userRouter = new Router({ prefix: '/user' })
+const userRouter: Router<any, CustomContext<any>> = new Router({ prefix: '/user' })
 
-userRouter.post('/login', verifyLogin, login)
+userRouter.post('/login', verifyLoginUserInfo, login)
+
+userRouter.post('/register', verifyRegisterUserInfo, encryptPassword, register)
 
 export default userRouter
