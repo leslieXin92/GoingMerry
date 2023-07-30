@@ -45,5 +45,17 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   page_or_type_is_required: {
     status: 400,
     message: 'Page And Type Cannot Be Empty!'
+  },
+  id_is_required: {
+    status: 400,
+    message: 'Id Cannot Be Empty!'
+  },
+  id_is_invalid: {
+    status: 400,
+    message: 'Id Is Invalid!'
+  },
+  blog_not_exists: {
+    status: 404,
+    message: 'Blog Dose Not Exists!'
   }
 }

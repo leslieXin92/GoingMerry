@@ -9,3 +9,6 @@ export type ErrorTypeKey =
   | 'title_content_type_is_required'
   | 'type_is_invalid'
   | 'page_or_type_is_required'
+  | 'id_is_required'
+  | 'id_is_invalid'
+  | 'blog_not_exists'

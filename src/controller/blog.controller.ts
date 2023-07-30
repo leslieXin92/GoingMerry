@@ -1,4 +1,4 @@
-import { createBlog, getBlogList } from '@/service'
+import { createBlog, getBlogItem, getBlogList } from '@/service'
 import { useSuccessReturn, useThrowError } from '@/utils'
 import type { Context } from 'koa'
 import type { BlogType, CreateBlogParams } from '@/types'
@@ -18,4 +18,12 @@ export const handleGetBlogList = async (ctx: Context) => {
   if (type === 'private' && !ctx.user) return useThrowError(ctx, 'unauthorized')
   const { blogList, total } = await getBlogList(page as string, type as BlogType) // TODO - type
   ctx.body = useSuccessReturn({ blogList, total })
+}
+
+export const handleGetBlogItem = async (ctx: Context) => {
+  const { id } = ctx.params
+  const blogItem = await getBlogItem(id as string)
+  if (!blogItem) return useThrowError(ctx, 'blog_not_exists')
+  if (blogItem.type === 'private' && !ctx.user) return useThrowError(ctx, 'unauthorized')
+  ctx.body = useSuccessReturn(blogItem)
 }

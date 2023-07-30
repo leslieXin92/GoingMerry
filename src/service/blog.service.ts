@@ -1,6 +1,12 @@
 import execute from '@/app/database'
 import type { BlogType, CreateBlogParams } from '@/types'
 
+export const createBlog = async (params: { author: string } & CreateBlogParams) => {
+  const { author, title, content, type } = params
+  const statement = `INSERT INTO blogs (author, title, content, type) VALUES (?, ?, ?, ?);`
+  await execute(statement, [author, title, content, type])
+}
+
 export const getBlogList = async (page: string | number, type: BlogType) => {
   const getListStatement = type === 'public'
     ? `
@@ -32,8 +38,12 @@ export const getBlogList = async (page: string | number, type: BlogType) => {
   return { blogList, total: total[0].total }
 }
 
-export const createBlog = async (params: { author: string } & CreateBlogParams) => {
-  const { author, title, content, type } = params
-  const statement = `INSERT INTO blogs (author, title, content, type) VALUES (?, ?, ?, ?);`
-  await execute(statement, [author, title, content, type])
+export const getBlogItem = async (id: string) => {
+  const statement = `
+    SELECT id, type, title, content, createAt
+    FROM blogs
+    WHERE id = ?;
+  `
+  const [blogItem] = await execute(statement, [id]) as any[] // TODO - type
+  return blogItem[0]
 }

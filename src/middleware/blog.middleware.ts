@@ -17,3 +17,11 @@ export const verifyGetBlogListParams = async (ctx: Context, next: Next) => {
   if (!['public', 'private'].includes(type as string)) return useThrowError(ctx, 'type_is_invalid') // TODO - type
   await next()
 }
+
+// Verify user submitted params for getting blog detail
+export const verifyGetBlogDetailParams = async (ctx: Context, next: Next) => {
+  const { id } = ctx.params
+  if (!id) return useThrowError(ctx, 'id_is_required')
+  if (isNaN(parseInt(id as string))) return useThrowError(ctx, 'id_is_invalid')
+  await next()
+}

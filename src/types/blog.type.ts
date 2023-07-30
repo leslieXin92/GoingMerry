@@ -10,3 +10,7 @@ export interface getBlogListParams {
   page: number | string
   type: BlogType
 }
+
+export interface getBlogItemParams {
+  id: string
+}
