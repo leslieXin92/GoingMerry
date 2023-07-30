@@ -1,21 +1,35 @@
 import execute from '@/app/database'
 import type { BlogType, CreateBlogParams } from '@/types'
 
-export const getBlogList = async (pageSize: number, type: BlogType) => {
-  const statement = type === 'public'
+export const getBlogList = async (page: string | number, type: BlogType) => {
+  const getListStatement = type === 'public'
     ? `
       SELECT id, title, createAt
       FROM blogs
       WHERE type = 'public'
-      LIMIT 10 OFFSET 1
+      LIMIT ?, 10;
     `
     : `
       SELECT id, title, createAt
       FROM blogs
-      LIMIT 10 OFFSET 1
+      LIMIT ?, 10;
     `
-  const [res] = await execute(statement, [type, pageSize])
-  return res
+  const offset = String((Number(page) - 1) * 10)
+  const [blogList] = await execute(getListStatement, [offset])
+
+  const getTotalStatement = type === 'public'
+    ? `
+        SELECT COUNT(id) AS total
+        FROM blogs
+        WHERE type = 'public';
+    `
+    : `
+        SELECT COUNT(id) AS total
+        FROM blogs;
+    `
+  const [total] = await execute(getTotalStatement) as any[] // TODO - type
+
+  return { blogList, total: total[0].total }
 }
 
 export const createBlog = async (params: { author: string } & CreateBlogParams) => {

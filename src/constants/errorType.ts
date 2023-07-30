@@ -30,10 +30,6 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
     status: 401, // Unauthorized
     message: 'Unauthorized!'
   },
-  you_do_not_have_access: {
-    status: 401,
-    message: 'You Do Not Have Access!'
-  },
   network_error: {
     status: 500,
     message: 'Network Error!'
@@ -45,5 +41,9 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   type_is_invalid: {
     status: 400,
     message: 'Type Is Invalid!'
+  },
+  page_or_type_is_required: {
+    status: 400,
+    message: 'Page And Type Cannot Be Empty!'
   }
 }

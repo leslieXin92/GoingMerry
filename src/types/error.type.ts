@@ -5,7 +5,7 @@ export type ErrorTypeKey =
   | 'password_is_not_same'
   | 'user_has_already_exists'
   | 'unauthorized'
-  | 'you_do_not_have_access'
   | 'network_error'
   | 'title_content_type_is_required'
   | 'type_is_invalid'
+  | 'page_or_type_is_required'

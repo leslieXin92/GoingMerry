@@ -5,3 +5,8 @@ export interface CreateBlogParams {
   content: string
   type: BlogType
 }
+
+export interface getBlogListParams {
+  page: number | string
+  type: BlogType
+}

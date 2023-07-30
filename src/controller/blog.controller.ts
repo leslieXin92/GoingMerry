@@ -16,11 +16,6 @@ export const handleGetBlogList = async (ctx: Context) => {
   const { type, page } = ctx.query
   if (type === 'public' && ctx.user) return useThrowError(ctx, 'network_error')
   if (type === 'private' && !ctx.user) return useThrowError(ctx, 'unauthorized')
-  const blogList = await getBlogList(Number(page), type as BlogType)
-  const resultData = {
-    blogList,
-    // @ts-ignore TODO - type
-    total: blogList.length
-  }
-  ctx.body = useSuccessReturn(resultData)
+  const { blogList, total } = await getBlogList(page as string, type as BlogType) // TODO - type
+  ctx.body = useSuccessReturn({ blogList, total })
 }
