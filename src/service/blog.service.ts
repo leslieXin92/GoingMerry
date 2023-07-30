@@ -1,6 +1,5 @@
 import execute from '@/app/database'
-import type { BlogType, CreateBlogParams } from '@/types'
-import { UpdateBlogItemParams } from '@/types'
+import type { BlogType, BlogItem, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 
 export const createBlog = async (params: { author: string } & CreateBlogParams) => {
   const { author, title, content, type } = params
@@ -34,7 +33,7 @@ export const getBlogList = async (page: string | number, type: BlogType) => {
         SELECT COUNT(id) AS total
         FROM blogs;
     `
-  const [total] = await execute(getTotalStatement) as any[] // TODO - type
+  const [total] = await execute(getTotalStatement) as unknown as { total: number }[][]
 
   return { blogList, total: total[0].total }
 }
@@ -45,7 +44,7 @@ export const getBlogItem = async (id: string) => {
     FROM blogs
     WHERE id = ?;
   `
-  const [blogItem] = await execute(statement, [id]) as any[] // TODO - type
+  const [blogItem] = await execute(statement, [id]) as unknown as BlogItem[][]
   return blogItem[0]
 }
 

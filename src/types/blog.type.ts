@@ -1,5 +1,14 @@
 export type BlogType = 'public' | 'private'
 
+export interface BlogItem {
+  id: number
+  author: number
+  type: BlogType
+  title: string
+  content: string
+  createAt: string
+}
+
 export interface CreateBlogParams {
   title: string
   content: string
@@ -7,7 +16,7 @@ export interface CreateBlogParams {
 }
 
 export interface getBlogListParams {
-  page: number | string
+  page: string
   type: BlogType
 }
 

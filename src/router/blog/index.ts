@@ -16,9 +16,9 @@ import {
 
 const blogRouter = new Router({ prefix: '/blog' })
 
-blogRouter.post('/', verifyAuth, verifyCreateBlogParams, handleCreateBlog)
 blogRouter.get('/', verifyGetBlogListParams, checkAuth, handleGetBlogList)
 blogRouter.get('/:id', verifyGetBlogDetailParams, checkAuth, handleGetBlogItem)
+blogRouter.post('/', verifyAuth, verifyCreateBlogParams, handleCreateBlog)
 blogRouter.patch('/:id', verifyAuth, verifyCreateBlogParams, handleUpdateBlogItem)
 blogRouter.delete('/:id', verifyAuth, handleDeleteBlogItem)
 
