@@ -1,5 +1,6 @@
 import execute from '@/app/database'
 import type { BlogType, CreateBlogParams } from '@/types'
+import { UpdateBlogItemParams } from '@/types'
 
 export const createBlog = async (params: { author: string } & CreateBlogParams) => {
   const { author, title, content, type } = params
@@ -40,10 +41,20 @@ export const getBlogList = async (page: string | number, type: BlogType) => {
 
 export const getBlogItem = async (id: string) => {
   const statement = `
-    SELECT id, type, title, content, createAt
+    SELECT id, author, type, title, content, createAt
     FROM blogs
     WHERE id = ?;
   `
   const [blogItem] = await execute(statement, [id]) as any[] // TODO - type
   return blogItem[0]
+}
+
+export const updateBlog = async (params: UpdateBlogItemParams & { id: string }) => {
+  const { id, title, content, type } = params
+  const statement = `
+    UPDATE blogs
+    SET title = ?, content = ?, type = ?
+    WHERE id = ?;
+  `
+  await execute(statement, [title, content, type, id])
 }

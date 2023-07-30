@@ -55,7 +55,11 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
     message: 'Id Is Invalid!'
   },
   blog_not_exists: {
-    status: 404,
+    status: 400,
     message: 'Blog Dose Not Exists!'
+  },
+  no_change: {
+    status: 400,
+    message: 'No Change!'
   }
 }

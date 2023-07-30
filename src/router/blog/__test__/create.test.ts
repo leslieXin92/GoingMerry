@@ -35,7 +35,7 @@ describe('create blog', () => {
   test('no type', async () => {
     const params = {
       title: 'title',
-      content: '',
+      content: 'content',
       type: ''
     }
     const { status, body } = await testFn(params as CreateBlogParams, true)
@@ -46,12 +46,12 @@ describe('create blog', () => {
   test('invalid type', async () => {
     const params = {
       title: 'title',
-      content: '',
+      content: 'content',
       type: 'otherType'
     }
     const { status, body } = await testFn(params as CreateBlogParams, true)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
+    expect(body).toEqual(useErrorReturn('Type Is Invalid!'))
   })
 
   test('create success', async () => {

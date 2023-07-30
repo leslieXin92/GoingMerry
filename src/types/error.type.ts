@@ -12,3 +12,4 @@ export type ErrorTypeKey =
   | 'id_is_required'
   | 'id_is_invalid'
   | 'blog_not_exists'
+  | 'no_change'

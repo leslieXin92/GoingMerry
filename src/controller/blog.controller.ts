@@ -1,7 +1,7 @@
-import { createBlog, getBlogItem, getBlogList } from '@/service'
-import { useSuccessReturn, useThrowError } from '@/utils'
+import { createBlog, getBlogItem, getBlogList, updateBlog } from '@/service'
+import { useSuccessReturn, useThrowError, isEqual } from '@/utils'
 import type { Context } from 'koa'
-import type { BlogType, CreateBlogParams } from '@/types'
+import type { BlogType, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 
 export const handleCreateBlog = async (ctx: Context) => {
   const params = {
@@ -26,4 +26,15 @@ export const handleGetBlogItem = async (ctx: Context) => {
   if (!blogItem) return useThrowError(ctx, 'blog_not_exists')
   if (blogItem.type === 'private' && !ctx.user) return useThrowError(ctx, 'unauthorized')
   ctx.body = useSuccessReturn(blogItem)
+}
+
+export const handleUpdateBlogItem = async (ctx: Context) => {
+  if (isNaN(parseInt(ctx.params.id))) return useThrowError(ctx, 'id_is_invalid')
+  const beforeBlogItem = await getBlogItem(ctx.params.id)
+  if (!beforeBlogItem) return useThrowError(ctx, 'blog_not_exists')
+  if (beforeBlogItem.author !== ctx.user.id && ctx.user.username !== 'leslie') return useThrowError(ctx, 'unauthorized')
+  const afterBlogItem = ctx.request.body as UpdateBlogItemParams
+  if (isEqual(beforeBlogItem, afterBlogItem)) return useThrowError(ctx, 'no_change')
+  await updateBlog({ ...afterBlogItem, id: ctx.params.id })
+  ctx.body = useSuccessReturn(null, 'Update Success!')
 }

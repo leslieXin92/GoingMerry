@@ -20,8 +20,6 @@ export const verifyGetBlogListParams = async (ctx: Context, next: Next) => {
 
 // Verify user submitted params for getting blog detail
 export const verifyGetBlogDetailParams = async (ctx: Context, next: Next) => {
-  const { id } = ctx.params
-  if (!id) return useThrowError(ctx, 'id_is_required')
-  if (isNaN(parseInt(id as string))) return useThrowError(ctx, 'id_is_invalid')
+  if (isNaN(parseInt(ctx.params.id))) return useThrowError(ctx, 'id_is_invalid')
   await next()
 }

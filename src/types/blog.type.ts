@@ -11,6 +11,8 @@ export interface getBlogListParams {
   type: BlogType
 }
 
-export interface getBlogItemParams {
-  id: string
+export interface UpdateBlogItemParams {
+  title: string
+  content: string
+  type: BlogType
 }
