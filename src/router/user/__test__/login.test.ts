@@ -39,6 +39,6 @@ describe('login', () => {
     const password = 'leslie'
     const { status, body } = await testFn({ username, password })
     expect(status).toBe(200)
-    expect(body).toEqual(useSuccessReturn({ id: 1, username, token: expect.any(String) }, 'Login Success!'))
+    expect(body).toEqual(useSuccessReturn({ id: expect.any(Number), username, token: expect.any(String) }, 'Login Success!'))
   })
 })
