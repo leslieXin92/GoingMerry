@@ -95,7 +95,7 @@ describe('update blog', () => {
   })
 
   test('ordinary people change their own blog', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/11', 'patch')
+    const testFn = useTest<UpdateBlogItemParams>('/blog/16', 'patch')
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
@@ -119,7 +119,7 @@ describe('update blog', () => {
   })
 
   test('leslie change someone else\'s blog', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/11', 'patch')
+    const testFn = useTest<UpdateBlogItemParams>('/blog/16', 'patch')
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',

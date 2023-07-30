@@ -58,3 +58,11 @@ export const updateBlog = async (params: UpdateBlogItemParams & { id: string }) 
   `
   await execute(statement, [title, content, type, id])
 }
+
+export const deleteBlog = async (id: string) => {
+  const statement = `
+    DELETE FROM blogs
+    WHERE id = ?;
+  `
+  await execute(statement, [id])
+}
