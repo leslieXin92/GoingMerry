@@ -5,7 +5,7 @@ import { PRIVATE_KEY } from '@/app/config'
 import type { Context } from 'koa'
 import type { CustomContext, RegisterParams } from '@/types'
 
-export const login = async (ctx: Context) => {
+export const handleLogin = async (ctx: Context) => {
   const { id, username } = ctx.user
   const token = sign({ id, username }, PRIVATE_KEY, {
     expiresIn: 60 * 60 * 24,
@@ -14,7 +14,7 @@ export const login = async (ctx: Context) => {
   ctx.body = useSuccessReturn({ id, username, token }, 'Login Success!')
 }
 
-export const register = async (ctx: CustomContext<RegisterParams>) => {
+export const handleRegister = async (ctx: CustomContext<RegisterParams>) => {
   const { username, password } = ctx.request.body
   await createUser(username, password)
   ctx.body = useSuccessReturn(null, 'Register Success!')

@@ -1,16 +1,9 @@
+import type { ErrorTypeKey } from '@/types'
+
 interface ErrorTypeItem {
   status: number
   message: string
 }
-
-export type ErrorTypeKey =
-  | 'name_or_password_is_required'
-  | 'user_does_not_exists'
-  | 'password_is_incorrect'
-  | 'password_is_not_same'
-  | 'user_has_already_exists'
-  | 'unauthorized'
-  | 'you_do_not_have_access'
 
 export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   name_or_password_is_required: {
@@ -40,5 +33,17 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   you_do_not_have_access: {
     status: 401,
     message: 'You Do Not Have Access!'
+  },
+  network_error: {
+    status: 500,
+    message: 'Network Error!'
+  },
+  title_content_type_is_required: {
+    status: 400,
+    message: 'Title, Content And Type Cannot Be Empty!'
+  },
+  type_is_invalid: {
+    status: 400,
+    message: 'Type Is Invalid!'
   }
 }

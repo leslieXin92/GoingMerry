@@ -10,8 +10,7 @@ interface UserInfo extends RowDataPacket {
 
 export const getUserInfo = async (name: string): Promise<UserInfo | null> => {
   const statement = `
-    SELECT
-      id, username, password
+    SELECT id, username, password
     FROM users
     WHERE username = ?;
   `

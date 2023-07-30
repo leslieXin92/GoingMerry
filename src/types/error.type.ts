@@ -1,0 +1,11 @@
+export type ErrorTypeKey =
+  | 'name_or_password_is_required'
+  | 'user_does_not_exists'
+  | 'password_is_incorrect'
+  | 'password_is_not_same'
+  | 'user_has_already_exists'
+  | 'unauthorized'
+  | 'you_do_not_have_access'
+  | 'network_error'
+  | 'title_content_type_is_required'
+  | 'type_is_invalid'
