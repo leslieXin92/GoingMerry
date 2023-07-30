@@ -3,12 +3,11 @@ import { getUserInfo } from '@/service'
 import { useThrowError, encrypt } from '@/utils'
 import { PUBLIC_KEY } from '@/app/config'
 import type { Context, Next } from 'koa'
-import type { CustomContext, LoginParams, RegisterParams } from '@/types'
+import type { LoginParams, RegisterParams } from '@/types'
 
-// Verify user submitted login info
-export const verifyLoginUserInfo = async (ctx: Context, next: Next) => {
-  // @ts-ignore TODO - type
-  const { username, password } = ctx.request.body
+// Verify user submitted params for login
+export const verifyLoginParams = async (ctx: Context, next: Next) => {
+  const { username, password } = ctx.request.body as Partial<LoginParams>
   if (!username || !password) return useThrowError(ctx, 'name_or_password_is_required')
   const user = await getUserInfo(username)
   if (!user) return useThrowError(ctx, 'user_does_not_exists')
@@ -17,10 +16,9 @@ export const verifyLoginUserInfo = async (ctx: Context, next: Next) => {
   await next()
 }
 
-// Verify user submitted register info
-export const verifyRegisterUserInfo = async (ctx: Context, next: Next) => {
-  // @ts-ignore TODO - type
-  const { username, password, confirmPassword } = ctx.request.body
+// Verify user submitted params for register
+export const verifyRegisterParams = async (ctx: Context, next: Next) => {
+  const { username, password, confirmPassword } = ctx.request.body as Partial<RegisterParams>
   if (!username || !password || !confirmPassword) return useThrowError(ctx, 'name_or_password_is_required')
   if (password !== confirmPassword) return useThrowError(ctx, 'password_is_not_same')
   const user = await getUserInfo(username)
@@ -30,10 +28,8 @@ export const verifyRegisterUserInfo = async (ctx: Context, next: Next) => {
 
 // Encrypt a password before saving it to the database
 export const encryptPassword = async (ctx: Context, next: Next) => {
-  // @ts-ignore TODO - type
-  const { password } = ctx.request.body
-  // @ts-ignore TODO - type
-  ctx.request.body.password = encrypt(password)
+  const { password } = ctx.request.body as RegisterParams
+  (ctx.request.body as RegisterParams).password = encrypt(password)
   await next()
 }
 
