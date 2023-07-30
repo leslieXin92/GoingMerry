@@ -3,7 +3,7 @@ import { createUser } from '@/service'
 import { useSuccessReturn } from '@/utils'
 import { PRIVATE_KEY } from '@/app/config'
 import type { Context } from 'koa'
-import type { CustomContext, RegisterParams } from '@/types'
+import type { RegisterParams } from '@/types'
 
 export const handleLogin = async (ctx: Context) => {
   const { id, username } = ctx.user
@@ -14,8 +14,8 @@ export const handleLogin = async (ctx: Context) => {
   ctx.body = useSuccessReturn({ id, username, token }, 'Login Success!')
 }
 
-export const handleRegister = async (ctx: CustomContext<RegisterParams>) => {
-  const { username, password } = ctx.request.body
+export const handleRegister = async (ctx: Context) => {
+  const { username, password } = ctx.request.body as RegisterParams
   await createUser(username, password)
   ctx.body = useSuccessReturn(null, 'Register Success!')
 }
