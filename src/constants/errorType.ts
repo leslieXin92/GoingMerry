@@ -42,9 +42,13 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
     status: 400,
     message: 'Type Is Invalid!'
   },
-  page_or_type_is_required: {
+  page_is_required: {
     status: 400,
-    message: 'Page And Type Cannot Be Empty!'
+    message: 'Page Cannot Be Empty!'
+  },
+  page_is_invalid: {
+    status: 400,
+    message: 'Page Is Invalid!'
   },
   id_is_required: {
     status: 400,
@@ -74,8 +78,8 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
     status: 400,
     message: 'Project Dose Not Exists!'
   },
-  page_is_invalid: {
+  page_or_type_is_required: {
     status: 400,
-    message: 'Page Is Invalid!'
+    message: 'Page And Type Cannot Be Empty!'
   }
 }

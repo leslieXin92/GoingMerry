@@ -4,8 +4,8 @@ import { useThrowError } from '@/utils'
 
 // Verify user submitted params for getting project list
 export const verifyGetProjectListParams = async (ctx: Context, next: Next) => {
-  const { page, status } = ctx.request.body as GetProjectListParams
-  if (!page) return useThrowError(ctx, 'page_or_type_is_required')
+  const { page, status } = ctx.query as Partial<GetProjectListParams>
+  if (!page) return useThrowError(ctx, 'page_is_required')
   if (isNaN(parseInt(page))) return useThrowError(ctx, 'page_is_invalid')
   if (status && !['pending', 'doing', 'done'].includes(status)) return useThrowError(ctx, 'status_is_invalid')
   await next()

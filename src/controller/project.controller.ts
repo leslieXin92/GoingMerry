@@ -4,7 +4,7 @@ import type { Context } from 'koa'
 import type { CreateProjectParams, GetProjectListParams, UpdateProjectParams } from '@/types'
 
 export const handleGetProjectList = async (ctx: Context) => {
-  const { projectList, total } = await getProjectList(ctx.request.body as GetProjectListParams)
+  const { projectList, total } = await getProjectList(ctx.query as Partial<GetProjectListParams>)
   ctx.body = useSuccessReturn({ projectList, total })
 }
 

@@ -1,8 +1,8 @@
 import execute from '@/app/database'
 import type { CreateProjectParams, GetProjectListParams, ProjectItem, UpdateProjectParams } from '@/types'
 
-export const getProjectList = async (params: GetProjectListParams) => {
-  const { page, status } = params
+export const getProjectList = async (params: Partial<GetProjectListParams>) => {
+  const { page, status = null } = params
   const getListStatement = status
     ? `
         SELECT id, title, status, image, startAt, endAt
