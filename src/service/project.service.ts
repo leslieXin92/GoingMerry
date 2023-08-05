@@ -1,5 +1,5 @@
 import execute from '@/app/database'
-import type { CreateProjectParams, GetProjectListParams, ProjectItem, UpdateProjectParams } from '@/types'
+import type { ProjectItem, GetProjectListParams, CreateProjectParams, UpdateProjectParams } from '@/types'
 
 export const getProjectList = async (params: Partial<GetProjectListParams>) => {
   const { page, status = null } = params
@@ -44,9 +44,17 @@ export const getProjectItem = async (id: string) => {
 }
 
 export const createProject = async (params: CreateProjectParams) => {
-  const { title, status, technologyStack = null, image = null, startAt = null, endAt = null } = params
+  const {
+    title,
+    status,
+    technologyStack = null,
+    introduction = null,
+    image = null,
+    startAt = null,
+    endAt = null
+  } = params
   const statement = `INSERT INTO projects (title, status, technologyStack, introduction, image, startAt, endAt) VALUES (?, ?, ?, ?, ?, ?, ?);`
-  await execute(statement, [title, status, technologyStack, image, startAt, endAt])
+  await execute(statement, [title, status, technologyStack, introduction, image, startAt, endAt])
 }
 
 export const updateProject = async (params: UpdateProjectParams & { id: number }) => {

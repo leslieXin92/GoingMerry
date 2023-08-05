@@ -1,7 +1,7 @@
-import { getProjectList, createProject, deleteProject, updateProject, getProjectItem } from '@/service'
+import { getProjectList, getProjectItem, createProject, updateProject, deleteProject } from '@/service'
 import { isEqual, useSuccessReturn, useThrowError } from '@/utils'
 import type { Context } from 'koa'
-import type { CreateProjectParams, GetProjectListParams, UpdateProjectParams } from '@/types'
+import type { GetProjectListParams, CreateProjectParams, UpdateProjectParams } from '@/types'
 
 export const handleGetProjectList = async (ctx: Context) => {
   const { projectList, total } = await getProjectList(ctx.query as Partial<GetProjectListParams>)
@@ -20,7 +20,7 @@ export const handleCreateProject = async (ctx: Context) => {
   ctx.body = useSuccessReturn(null, 'Create Success!')
 }
 
-export const handleUpdateProjectItem = async (ctx: Context) => {
+export const handleUpdateProject = async (ctx: Context) => {
   const { id } = ctx.params
   if (isNaN(parseInt(id))) return useThrowError(ctx, 'id_is_invalid')
   const beforeProjectItem = await getProjectItem(id)
@@ -32,7 +32,7 @@ export const handleUpdateProjectItem = async (ctx: Context) => {
   ctx.body = useSuccessReturn(null, 'Update Success!')
 }
 
-export const handleDeleteProjectItem = async (ctx: Context) => {
+export const handleDeleteProject = async (ctx: Context) => {
   const { id } = ctx.params
   if (isNaN(parseInt(id))) return useThrowError(ctx, 'id_is_invalid')
   const projectItem = await getProjectItem(id)

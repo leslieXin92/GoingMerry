@@ -1,6 +1,5 @@
 import Router from 'koa-router'
 import {
-  checkAuth,
   verifyAuth,
   verifyGetProjectListParams,
   verifyGetProjectDetailParams,
@@ -10,8 +9,8 @@ import {
   handleGetProjectList,
   handleGetProjectDetail,
   handleCreateProject,
-  handleUpdateProjectItem,
-  handleDeleteProjectItem
+  handleUpdateProject,
+  handleDeleteProject
 } from '@/controller'
 
 const projectRouter = new Router({ prefix: '/project' })
@@ -19,7 +18,7 @@ const projectRouter = new Router({ prefix: '/project' })
 projectRouter.get('/', verifyGetProjectListParams, handleGetProjectList)
 projectRouter.get('/:id', verifyGetProjectDetailParams, handleGetProjectDetail)
 projectRouter.post('/', verifyAuth, verifyCreateProjectParams, handleCreateProject)
-projectRouter.patch('/:id', verifyAuth, verifyCreateProjectParams, handleUpdateProjectItem)
-projectRouter.delete('/:id', verifyAuth, handleDeleteProjectItem)
+projectRouter.patch('/:id', verifyAuth, verifyCreateProjectParams, handleUpdateProject)
+projectRouter.delete('/:id', verifyAuth, handleDeleteProject)
 
 export default projectRouter
