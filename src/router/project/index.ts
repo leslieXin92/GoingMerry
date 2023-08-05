@@ -16,8 +16,8 @@ import {
 
 const projectRouter = new Router({ prefix: '/project' })
 
-projectRouter.get('/', verifyGetProjectListParams, checkAuth, handleGetProjectList)
-projectRouter.get('/:id', verifyGetProjectDetailParams, checkAuth, handleGetProjectDetail)
+projectRouter.get('/', verifyGetProjectListParams, handleGetProjectList)
+projectRouter.get('/:id', verifyGetProjectDetailParams, handleGetProjectDetail)
 projectRouter.post('/', verifyAuth, verifyCreateProjectParams, handleCreateProject)
 projectRouter.patch('/:id', verifyAuth, verifyCreateProjectParams, handleUpdateProjectItem)
 projectRouter.delete('/:id', verifyAuth, handleDeleteProjectItem)
