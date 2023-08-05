@@ -1,19 +1,12 @@
 export type ProjectStatus = 'pending' | 'doing' | 'done'
 
-export interface Author {
-  id: number
-  username: string
-  avatar: string
-  link: string
-}
-
 export interface ProjectItem {
   id: number
-  name: string
+  title: string
   status: ProjectStatus
-  authors: Author[]
-  technologyStack?: string[]
   image?: string
+  technologyStack?: string[]
+  introduction?: string
   startAt?: string
   endAt?: string
   createAt: string
@@ -26,21 +19,21 @@ export interface GetProjectListParams {
 }
 
 export interface CreateProjectParams {
-  name: string
+  title: string
   status: ProjectStatus
-  authors: Author[]
-  technologyStack?: string[]
   image?: string
+  technologyStack?: string[]
+  introduction?: string
   startAt?: string
   endAt?: string
 }
 
 export interface UpdateProjectParams {
-  name: string
+  title: string
   status: ProjectStatus
-  technologyStack?: string[]
-  authors: Author[]
   image?: string
+  technologyStack?: string[]
+  introduction?: string
   startAt?: string
   endAt?: string
 }

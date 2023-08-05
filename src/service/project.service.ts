@@ -5,13 +5,13 @@ export const getProjectList = async (params: GetProjectListParams) => {
   const { page, status } = params
   const getListStatement = status
     ? `
-        SELECT id, name, status, image, startAt, endAt
+        SELECT id, title, status, image, startAt, endAt
         FROM projects
         WHERE status = ?
         LIMIT ?, 10;
     `
     : `
-        SELECT id, name, status, image, startAt, endAt
+        SELECT id, title, status, image, startAt, endAt
         FROM projects
         LIMIT ?, 10;
     `
@@ -35,7 +35,7 @@ export const getProjectList = async (params: GetProjectListParams) => {
 
 export const getProjectItem = async (id: string) => {
   const statement = `
-    SELECT id, name, status, technologyStack, image, startAt, endAt
+    SELECT id, title, status, technologyStack, image, startAt, endAt
     FROM projects
     WHERE id = ?;
   `
@@ -44,19 +44,19 @@ export const getProjectItem = async (id: string) => {
 }
 
 export const createProject = async (params: CreateProjectParams) => {
-  const { name, status, authors, technologyStack = null, image = null, startAt = null, endAt = null } = params
-  const statement = `INSERT INTO projects (name, status, authors, technologyStack, image, startAt, endAt) VALUES (?, ?, ?, ?, ?, ?, ?);`
-  await execute(statement, [name, status, authors, technologyStack, image, startAt, endAt])
+  const { title, status, technologyStack = null, image = null, startAt = null, endAt = null } = params
+  const statement = `INSERT INTO projects (title, status, technologyStack, image, startAt, endAt) VALUES (?, ?, ?, ?, ?, ?);`
+  await execute(statement, [title, status, technologyStack, image, startAt, endAt])
 }
 
 export const updateProject = async (params: UpdateProjectParams & { id: number }) => {
-  const { id, name, status, authors, technologyStack = null, image = null, startAt = null, endAt = null } = params
+  const { id, title, status, technologyStack = null, image = null, startAt = null, endAt = null } = params
   const statement = `
     UPDATE projects
-    SET name = ?, status = ?, authors = ?, technologyStack = ?, image = ?, startAt = ?, endAt = ?
+    SET title = ?, status = ?, technologyStack = ?, image = ?, startAt = ?, endAt = ?
     WHERE id = ?;
   `
-  await execute(statement, [name, status, authors, technologyStack, image, startAt, endAt, id])
+  await execute(statement, [title, status, technologyStack, image, startAt, endAt, id])
 }
 
 export const deleteProject = async (id: string) => {

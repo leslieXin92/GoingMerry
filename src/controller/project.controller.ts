@@ -25,7 +25,7 @@ export const handleUpdateProjectItem = async (ctx: Context) => {
   if (isNaN(parseInt(id))) return useThrowError(ctx, 'id_is_invalid')
   const beforeProjectItem = await getProjectItem(id)
   if (!beforeProjectItem) return useThrowError(ctx, 'project_not_exists')
-  if (beforeProjectItem.authors.includes(ctx.user.id) && ctx.user.username !== 'leslie') return useThrowError(ctx, 'unauthorized')
+  if (ctx.user.username !== 'leslie') return useThrowError(ctx, 'unauthorized')
   const afterProjectItem = ctx.request.body as UpdateProjectParams
   if (isEqual(beforeProjectItem, afterProjectItem)) return useThrowError(ctx, 'no_change')
   await updateProject({ ...afterProjectItem, id })
@@ -37,7 +37,7 @@ export const handleDeleteProjectItem = async (ctx: Context) => {
   if (isNaN(parseInt(id))) return useThrowError(ctx, 'id_is_invalid')
   const projectItem = await getProjectItem(id)
   if (!projectItem) return useThrowError(ctx, 'project_not_exists')
-  if (projectItem.authors.includes(ctx.user.id) && ctx.user.username !== 'leslie') return useThrowError(ctx, 'unauthorized')
+  if (ctx.user.username !== 'leslie') return useThrowError(ctx, 'unauthorized')
   await deleteProject(id)
   ctx.body = useSuccessReturn(null, 'Delete Success!')
 }

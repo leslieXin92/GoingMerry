@@ -62,9 +62,9 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
     status: 400,
     message: 'No Change!'
   },
-  name_status_authors_is_required: {
+  title_status_is_required: {
     status: 400,
-    message: 'Name, Status And Authors Cannot Be Empty!'
+    message: 'title And Status Cannot Be Empty!'
   },
   status_is_invalid: {
     status: 400,
