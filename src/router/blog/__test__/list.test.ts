@@ -1,8 +1,8 @@
 import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
-import { BlogType, getBlogListParams } from '@/types'
+import { BlogType, GetBlogListParams } from '@/types'
 
 describe('get blog list', () => {
-  const testFn = useTest<getBlogListParams>('/blog', 'get')
+  const testFn = useTest<GetBlogListParams>('/blog', 'get')
 
   test('no type', async () => {
     const { status, body } = await testFn({ page: '1' })
@@ -20,6 +20,12 @@ describe('get blog list', () => {
     const { status, body } = await testFn({ page: '1', type: 'otherType' as BlogType })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Type Is Invalid!'))
+  })
+
+  test('page is invalid', async () => {
+    const { status, body } = await testFn({ page: 'xxx', type: 'public' })
+    expect(status).toBe(400)
+    expect(body).toEqual(useErrorReturn('Page Is Invalid!'))
   })
 
   test('get list success', async () => {

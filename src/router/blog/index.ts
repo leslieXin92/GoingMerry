@@ -10,8 +10,8 @@ import {
   handleCreateBlog,
   handleGetBlogList,
   handleGetBlogItem,
-  handleUpdateBlogItem,
-  handleDeleteBlogItem
+  handleUpdateBlog,
+  handleDeleteBlog
 } from '@/controller'
 
 const blogRouter = new Router({ prefix: '/blog' })
@@ -19,7 +19,7 @@ const blogRouter = new Router({ prefix: '/blog' })
 blogRouter.get('/', verifyGetBlogListParams, checkAuth, handleGetBlogList)
 blogRouter.get('/:id', verifyGetBlogDetailParams, checkAuth, handleGetBlogItem)
 blogRouter.post('/', verifyAuth, verifyCreateBlogParams, handleCreateBlog)
-blogRouter.patch('/:id', verifyAuth, verifyCreateBlogParams, handleUpdateBlogItem)
-blogRouter.delete('/:id', verifyAuth, handleDeleteBlogItem)
+blogRouter.patch('/:id', verifyAuth, verifyCreateBlogParams, handleUpdateBlog)
+blogRouter.delete('/:id', verifyAuth, handleDeleteBlog)
 
 export default blogRouter
