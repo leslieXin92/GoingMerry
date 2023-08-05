@@ -13,3 +13,7 @@ export type ErrorTypeKey =
   | 'id_is_invalid'
   | 'blog_not_exists'
   | 'no_change'
+  | 'name_status_authors_is_required'
+  | 'status_is_invalid'
+  | 'project_not_exists'
+  | 'page_is_invalid'

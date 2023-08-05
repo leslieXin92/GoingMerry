@@ -15,7 +15,7 @@ export interface CreateBlogParams {
   type: BlogType
 }
 
-export interface getBlogListParams {
+export interface GetBlogListParams {
   page: string
   type: BlogType
 }

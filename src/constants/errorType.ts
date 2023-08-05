@@ -61,5 +61,21 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   no_change: {
     status: 400,
     message: 'No Change!'
+  },
+  name_status_authors_is_required: {
+    status: 400,
+    message: 'Name, Status And Authors Cannot Be Empty!'
+  },
+  status_is_invalid: {
+    status: 400,
+    message: 'Status Is Invalid!'
+  },
+  project_not_exists: {
+    status: 400,
+    message: 'Project Dose Not Exists!'
+  },
+  page_is_invalid: {
+    status: 400,
+    message: 'Page Is Invalid!'
   }
 }

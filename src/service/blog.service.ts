@@ -10,15 +10,15 @@ export const createBlog = async (params: { author: string } & CreateBlogParams) 
 export const getBlogList = async (page: string | number, type: BlogType) => {
   const getListStatement = type === 'public'
     ? `
-      SELECT id, title, createAt
-      FROM blogs
-      WHERE type = 'public'
-      LIMIT ?, 10;
+        SELECT id, title, createAt
+        FROM blogs
+        WHERE type = 'public'
+        LIMIT ?, 10;
     `
     : `
-      SELECT id, title, createAt
-      FROM blogs
-      LIMIT ?, 10;
+        SELECT id, title, createAt
+        FROM blogs
+        LIMIT ?, 10;
     `
   const offset = String((Number(page) - 1) * 10)
   const [blogList] = await execute(getListStatement, [offset])

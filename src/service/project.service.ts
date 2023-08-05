@@ -1,0 +1,68 @@
+import execute from '@/app/database'
+import type { CreateProjectParams, GetProjectListParams, ProjectItem, UpdateProjectParams } from '@/types'
+
+export const getProjectList = async (params: GetProjectListParams) => {
+  const { page, status } = params
+  const getListStatement = status
+    ? `
+        SELECT id, name, status, image, startAt, endAt
+        FROM projects
+        WHERE status = ?
+        LIMIT ?, 10;
+    `
+    : `
+        SELECT id, name, status, image, startAt, endAt
+        FROM projects
+        LIMIT ?, 10;
+    `
+  const offset = String((Number(page) - 1) * 10)
+  const [projectList] = await execute(getListStatement, [status, offset])
+
+  const getTotalStatement = status
+    ? `
+        SELECT COUNT(id) AS total
+        FROM projects
+        WHERE status = ?;
+    `
+    : `
+        SELECT COUNT(id) AS total
+        FROM projects;
+    `
+  const [total] = await execute(getTotalStatement, [status]) as unknown as { total: number }[][]
+
+  return { projectList, total: total[0].total }
+}
+
+export const getProjectItem = async (id: string) => {
+  const statement = `
+    SELECT id, name, status, technologyStack, image, startAt, endAt
+    FROM projects
+    WHERE id = ?;
+  `
+  const [projectItem] = await execute(statement, [id]) as unknown as ProjectItem[][]
+  return projectItem[0]
+}
+
+export const createProject = async (params: CreateProjectParams) => {
+  const { name, status, authors, technologyStack = null, image = null, startAt = null, endAt = null } = params
+  const statement = `INSERT INTO projects (name, status, authors, technologyStack, image, startAt, endAt) VALUES (?, ?, ?, ?, ?, ?, ?);`
+  await execute(statement, [name, status, authors, technologyStack, image, startAt, endAt])
+}
+
+export const updateProject = async (params: UpdateProjectParams & { id: number }) => {
+  const { id, name, status, authors, technologyStack = null, image = null, startAt = null, endAt = null } = params
+  const statement = `
+    UPDATE projects
+    SET name = ?, status = ?, authors = ?, technologyStack = ?, image = ?, startAt = ?, endAt = ?
+    WHERE id = ?;
+  `
+  await execute(statement, [name, status, authors, technologyStack, image, startAt, endAt, id])
+}
+
+export const deleteProject = async (id: string) => {
+  const statement = `
+    DELETE FROM projects
+    WHERE id = ?;
+  `
+  await execute(statement, [id])
+}
