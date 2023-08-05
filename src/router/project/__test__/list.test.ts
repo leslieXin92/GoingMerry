@@ -1,7 +1,7 @@
 import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
 import type { GetProjectListParams, ProjectStatus } from '@/types'
 
-describe('index', () => {
+describe('get project list', () => {
   const testFn = useTest<GetProjectListParams>('/project', 'get')
 
   test('no page', async () => {
