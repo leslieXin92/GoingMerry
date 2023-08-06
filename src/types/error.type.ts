@@ -18,3 +18,5 @@ export type ErrorTypeKey =
   | 'status_is_invalid'
   | 'project_not_exists'
   | 'page_or_type_is_required'
+  | 'time_is_required'
+  | 'invalid_time'

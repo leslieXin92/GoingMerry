@@ -81,5 +81,13 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   page_or_type_is_required: {
     status: 400,
     message: 'Page And Type Cannot Be Empty!'
+  },
+  time_is_required: {
+    status: 400,
+    message: 'Time Cannot Be Empty!'
+  },
+  invalid_time: {
+    status: 400,
+    message: 'Invalid Time!'
   }
 }
