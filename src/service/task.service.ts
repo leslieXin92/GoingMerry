@@ -11,5 +11,16 @@ export const getTaskList = async (time: string[]) => {
     ORDER BY doneAt esc;
   `
   const [taskList] = await execute(statement, [startTime, endTime]) as unknown as TaskItem[][]
-  return taskList[0]
+  return taskList
+}
+
+export const getTaskItem = async (id: string) => {
+  // id 2023-01-01
+  const statement = `
+    SELECT id, category, title, status, doneAt
+    FROM tasks
+    WHERE doneAt >= ? AND doneAt <= ?;
+  `
+  const [taskItem] = await execute(statement, [id]) as unknown as TaskItem[][]
+  return taskItem[0]
 }
