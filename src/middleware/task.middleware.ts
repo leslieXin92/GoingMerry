@@ -1,7 +1,6 @@
-import { useThrowError } from '@/utils'
+import { useThrowError, validateDate } from '@/utils'
 import type { Context, Next } from 'koa'
-import type { GetTaskListParams } from '@/types'
-import { validateDate } from '@/utils/time'
+import type { GetTaskListParams, CreateTaskParams } from '@/types'
 
 // Verify user submitted params for getting task list
 export const verifyGetTaskListParams = async (ctx: Context, next: Next) => {
@@ -15,5 +14,13 @@ export const verifyGetTaskListParams = async (ctx: Context, next: Next) => {
 export const verifyGetTaskItemParams = async (ctx: Context, next: Next) => {
   const { id } = ctx.params
   if (!validateDate(id)) return useThrowError(ctx, 'id_is_invalid')
+  await next()
+}
+
+// Verify user submitted params for creating task
+export const verifyCreateTaskParams = async (ctx: Context, next: Next) => {
+  const { title, category, deadline } = ctx.request.body as CreateTaskParams
+  if (!title || !category) return useThrowError(ctx, 'title_category_is_required')
+  if (deadline && !validateDate(deadline)) return useThrowError(ctx, 'invalid_time')
   await next()
 }

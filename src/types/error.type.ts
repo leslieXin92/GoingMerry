@@ -20,3 +20,4 @@ export type ErrorTypeKey =
   | 'page_or_type_is_required'
   | 'time_is_required'
   | 'invalid_time'
+  | 'title_category_is_required'

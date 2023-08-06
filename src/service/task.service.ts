@@ -1,5 +1,5 @@
 import execute from '@/app/database'
-import type { TaskItem } from '@/types'
+import type { TaskItem, CreateTaskParams } from '@/types'
 
 export const getTaskList = async (time: string[]) => {
   const startTime = new Date(time[0])
@@ -15,7 +15,6 @@ export const getTaskList = async (time: string[]) => {
 }
 
 export const getTaskItem = async (id: string) => {
-  // id 2023-01-01
   const statement = `
     SELECT id, category, title, status, doneAt
     FROM tasks
@@ -23,4 +22,10 @@ export const getTaskItem = async (id: string) => {
   `
   const [taskItem] = await execute(statement, [id]) as unknown as TaskItem[][]
   return taskItem[0]
+}
+
+export const createTask = async (params: CreateTaskParams) => {
+  const { title, category, deadline = null } = params
+  const statement = `INSERT INTO tasks (title, category, deadline) VALUES (?, ?, ?);`
+  await execute(statement, [title, category, deadline])
 }

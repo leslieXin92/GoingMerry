@@ -89,5 +89,9 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   invalid_time: {
     status: 400,
     message: 'Invalid Time!'
+  },
+  title_category_is_required: {
+    status: 400,
+    message: 'Title And Category Cannot Be Empty!'
   }
 }
