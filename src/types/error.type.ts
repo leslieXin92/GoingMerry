@@ -21,3 +21,4 @@ export type ErrorTypeKey =
   | 'time_is_required'
   | 'invalid_time'
   | 'title_category_is_required'
+  | 'task_not_exists'

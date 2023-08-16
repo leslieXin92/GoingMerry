@@ -4,9 +4,10 @@ import type { GetTaskListParams, CreateTaskParams } from '@/types'
 
 // Verify user submitted params for getting task list
 export const verifyGetTaskListParams = async (ctx: Context, next: Next) => {
-  const { time } = ctx.query as Partial<GetTaskListParams>
+  const { time, status } = ctx.query as Partial<GetTaskListParams>
   if (!time || (Array.isArray(time) && !time.length)) return useThrowError(ctx, 'time_is_required')
   if (!Array.isArray(time) || time.length !== 2 || !validateDate(time[0]) || !validateDate(time[1])) return useThrowError(ctx, 'invalid_time')
+  if (status && !['pending', 'doing', 'done', 'canceled'].includes(status)) return useThrowError(ctx, 'status_is_invalid')
   await next()
 }
 

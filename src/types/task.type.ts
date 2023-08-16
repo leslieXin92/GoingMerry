@@ -14,10 +14,18 @@ export interface TaskItem {
 
 export interface GetTaskListParams {
   time: string[]
+  status?: TaskStatus
 }
 
 export interface CreateTaskParams {
   title: string
   category: string
   deadline?: string
+}
+
+export interface UpdateTaskParams {
+  title: string
+  category: string
+  deadline?: string
+  status?: TaskStatus
 }

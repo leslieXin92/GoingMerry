@@ -1,26 +1,34 @@
 import execute from '@/app/database'
-import type { TaskItem, CreateTaskParams } from '@/types'
+import type { TaskItem, TaskStatus, CreateTaskParams, UpdateTaskParams } from '@/types'
 
-export const getTaskList = async (time: string[]) => {
-  const startTime = new Date(time[0])
-  const endTime = new Date(time[1])
-  const statement = `
-    SELECT id, doneAt
-    FROM tasks
-    WHERE doneAt >= ? AND doneAt <= ?
-    ORDER BY doneAt esc;
-  `
-  const [taskList] = await execute(statement, [startTime, endTime]) as unknown as TaskItem[][]
+export const getTaskList = async (time: string[], status?: TaskStatus) => {
+  const statement = status
+    ? `
+      SELECT id, title, category, status, deadline, doneAt, createAt
+      FROM tasks
+      WHERE doneAt >= ?
+      AND doneAt <= ?
+      AND status = ?
+      ORDER BY createAt esc;
+    `
+    : `
+      SELECT id, category, title, status, doneAt
+      FROM tasks
+      WHERE doneAt >= ?
+      AND doneAt <= ?
+      ORDER BY createAt esc;
+    `
+  const [taskList] = await execute(statement, [time[0], time[1]]) as unknown as TaskItem[][]
   return taskList
 }
 
-export const getTaskItem = async (id: string) => {
+export const getTaskItem = async (time: string) => {
   const statement = `
     SELECT id, category, title, status, doneAt
     FROM tasks
     WHERE doneAt >= ? AND doneAt <= ?;
   `
-  const [taskItem] = await execute(statement, [id]) as unknown as TaskItem[][]
+  const [taskItem] = await execute(statement, [time]) as unknown as TaskItem[][]
   return taskItem[0]
 }
 
@@ -28,4 +36,14 @@ export const createTask = async (params: CreateTaskParams) => {
   const { title, category, deadline = null } = params
   const statement = `INSERT INTO tasks (title, category, deadline) VALUES (?, ?, ?);`
   await execute(statement, [title, category, deadline])
+}
+
+export const updateTask = async (params: UpdateTaskParams & { id: number }) => {
+  const { id, title, category, deadline = null, status = 'pending' } = params
+  const statement = `
+    UPDATE tasks
+    SET title = ?, category = ?, deadline = ?, status = ?
+    WHERE id = ?;
+  `
+  await execute(statement, [title, category, deadline, status, id])
 }

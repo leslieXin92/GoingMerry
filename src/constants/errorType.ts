@@ -93,5 +93,9 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   title_category_is_required: {
     status: 400,
     message: 'Title And Category Cannot Be Empty!'
+  },
+  task_not_exists: {
+    status: 400,
+    message: 'Task Dose Not Exists!'
   }
 }
