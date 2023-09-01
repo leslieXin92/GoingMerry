@@ -2,7 +2,6 @@ export type BlogType = 'public' | 'private'
 
 export interface BlogItem {
   id: number
-  author: number
   type: BlogType
   title: string
   content: string

@@ -1,8 +1,9 @@
 import { verify as jwtVerify } from 'jsonwebtoken'
 import { getUserInfo } from '@/service'
-import { useThrowError, encrypt } from '@/utils'
+import { useThrowError, encrypt, verifyWriteList } from '@/utils'
 import { PUBLIC_KEY } from '@/app/config'
 import type { Context, Next } from 'koa'
+import type { JwtPayload } from 'jsonwebtoken'
 import type { LoginParams, RegisterParams } from '@/types'
 
 // Verify user submitted params for login
@@ -48,12 +49,12 @@ export const checkAuth = async (ctx: Context, next: Next) => {
 
 // Verify the user's token and throw an error if it is invalid
 export const verifyAuth = async (ctx: Context, next: Next) => {
-  if (ctx.user) return await next()
-  const authorization = ctx.headers.authorization
+  const { headers: { authorization } } = ctx
   if (!authorization) return useThrowError(ctx, 'unauthorized')
   try {
     const token = authorization.replace('Bearer ', '')
-    ctx.user = jwtVerify(token, PUBLIC_KEY, { algorithms: ['RS384'] })
+    const user = jwtVerify(token, PUBLIC_KEY, { algorithms: ['RS384'] }) as JwtPayload
+    if (!verifyWriteList(user.username)) return useThrowError(ctx, 'unauthorized')
     await next()
   } catch (err) {
     return useThrowError(ctx, 'unauthorized')
