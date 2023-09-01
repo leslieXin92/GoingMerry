@@ -1,11 +1,11 @@
-import type { ErrorTypeKey } from '@/types'
+import type { UserErrorTypeKey, BlogErrorTypeKey, ErrorTypeKey } from '@/types'
 
 interface ErrorTypeItem {
   status: number
   message: string
 }
 
-export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
+const userErrorType: Record<UserErrorTypeKey, ErrorTypeItem> = {
   name_or_password_is_required: {
     status: 400, // Bad Request
     message: 'Username Or Password Cannot Be Empty!'
@@ -29,19 +29,10 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   unauthorized: {
     status: 401, // Unauthorized
     message: 'Unauthorized!'
-  },
-  network_error: {
-    status: 500,
-    message: 'Network Error!'
-  },
-  title_content_type_is_required: {
-    status: 400,
-    message: 'Title, Content And Type Cannot Be Empty!'
-  },
-  type_is_invalid: {
-    status: 400,
-    message: 'Type Is Invalid!'
-  },
+  }
+}
+
+const blogErrorType: Record<BlogErrorTypeKey, ErrorTypeItem> = {
   page_is_required: {
     status: 400,
     message: 'Page Cannot Be Empty!'
@@ -49,6 +40,14 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   page_is_invalid: {
     status: 400,
     message: 'Page Is Invalid!'
+  },
+  type_is_invalid: {
+    status: 400,
+    message: 'Type Is Invalid!'
+  },
+  title_content_type_is_required: {
+    status: 400,
+    message: 'Title, Content And Type Cannot Be Empty!'
   },
   id_is_required: {
     status: 400,
@@ -65,7 +64,18 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   no_change: {
     status: 400,
     message: 'No Change!'
+  }
+}
+
+export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
+  ...userErrorType,
+  ...blogErrorType,
+
+  network_error: {
+    status: 500,
+    message: 'Network Error!'
   },
+
   title_status_is_required: {
     status: 400,
     message: 'title And Status Cannot Be Empty!'
@@ -77,10 +87,6 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   project_not_exists: {
     status: 400,
     message: 'Project Dose Not Exists!'
-  },
-  page_or_type_is_required: {
-    status: 400,
-    message: 'Page And Type Cannot Be Empty!'
   },
   time_is_required: {
     status: 400,
