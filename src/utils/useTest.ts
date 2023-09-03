@@ -27,6 +27,8 @@ const handleAuth = async (req: Test, userInfo: Omit<UserInfo, 'password'>) => {
 export const useTest = <Params = unknown>(url: string, method: Method, params?: Params) => {
   beforeEach(async () => await clearDatabase())
   afterEach(async () => await clearDatabase())
+  beforeAll(async () => await clearDatabase())
+  afterAll(async () => await clearDatabase())
 
   switch (method) {
     case 'get' || 'GET':

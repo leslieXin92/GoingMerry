@@ -1,24 +1,26 @@
 import { execute } from '@/app/database'
 
+type Table = 'users' | 'blogs' | 'projects' | 'tasks'
+
 interface SelectQuery {
-  table: string,
+  table: Table,
   where?: Record<string, any>,
   columns: string[]
 }
 
 interface InsertQuery {
-  table: string,
+  table: Table,
   data: Record<string, any>
 }
 
 interface UpdateQuery {
-  table: string,
+  table: Table,
   where: Record<string, any>,
   update: Record<string, any>
 }
 
 interface DeleteQuery {
-  table: string,
+  table: Table,
   where: Record<string, any>
 }
 

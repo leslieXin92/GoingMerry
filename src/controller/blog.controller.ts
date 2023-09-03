@@ -11,6 +11,7 @@ export const handleGetBlogList = async (ctx: Context) => {
   const totalCount = totalBlogList.filter(blogItem => type ? blogItem.type === type : true).length
   const blogList = totalBlogList
     .filter(blogItem => type ? blogItem.type === type : true)
+    .sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime())
     .slice((parseInt(page) - 1) * 10, parseInt(page) * 10)
   ctx.body = useSuccessReturn({ blogList, totalCount })
 }

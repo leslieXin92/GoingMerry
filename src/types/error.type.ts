@@ -15,15 +15,25 @@ export type BlogErrorTypeKey =
   | 'id_is_invalid'
   | 'blog_not_exists'
   | 'no_change'
+  | 'unauthorized'
+
+export type ProjectErrorTypeKey =
+  | 'page_is_required'
+  | 'page_is_invalid'
+  | 'status_is_invalid'
+  | 'title_or_status_is_required'
+  | 'id_is_invalid'
+  | 'project_not_exists'
+  | 'no_change'
+  | 'unauthorized'
 
 export type ErrorTypeKey =
   | UserErrorTypeKey
   | BlogErrorTypeKey
+  | ProjectErrorTypeKey
 
   | 'network_error'
-  | 'title_status_is_required'
-  | 'status_is_invalid'
-  | 'project_not_exists'
+
   | 'time_is_required'
   | 'invalid_time'
   | 'title_category_is_required'

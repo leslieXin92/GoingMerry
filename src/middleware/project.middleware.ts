@@ -21,7 +21,7 @@ export const verifyGetProjectDetailParams = async (ctx: Context, next: Next) => 
 // Verify user submitted params for creating project
 export const verifyCreateProjectParams = async (ctx: Context, next: Next) => {
   const { title, status } = ctx.request.body as Partial<CreateProjectParams>
-  if (!title || !status) return useThrowError(ctx, 'title_status_is_required')
+  if (!title || !status) return useThrowError(ctx, 'title_or_status_is_required')
   if (!['pending', 'doing', 'done'].includes(status)) return useThrowError(ctx, 'status_is_invalid')
   await next()
 }

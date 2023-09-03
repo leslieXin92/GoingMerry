@@ -60,9 +60,3 @@ export const verifyAuth = async (ctx: Context, next: Next) => {
     return useThrowError(ctx, 'unauthorized')
   }
 }
-
-// Verify that the user is Leslie
-export const verifyLeslie = async (ctx: Context, next: Next) => {
-  if (ctx.user.username !== 'leslie') return useThrowError(ctx, 'unauthorized')
-  await next()
-}

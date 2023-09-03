@@ -1,13 +1,22 @@
-import type { UserErrorTypeKey, BlogErrorTypeKey, ErrorTypeKey } from '@/types'
+import type { UserErrorTypeKey, BlogErrorTypeKey, ProjectErrorTypeKey, ErrorTypeKey } from '@/types'
 
 interface ErrorTypeItem {
   status: number
   message: string
 }
 
+/**
+ * @description
+ * 400: Bad Request
+ * 401: Unauthorized
+ * 403: Forbidden
+ * 409: Conflict
+ * 500: Internal Server Error
+ */
+
 const userErrorType: Record<UserErrorTypeKey, ErrorTypeItem> = {
   name_or_password_is_required: {
-    status: 400, // Bad Request
+    status: 400,
     message: 'Username Or Password Cannot Be Empty!'
   },
   user_does_not_exists: {
@@ -23,11 +32,11 @@ const userErrorType: Record<UserErrorTypeKey, ErrorTypeItem> = {
     message: 'Password Is Not Same!'
   },
   user_has_already_exists: {
-    status: 409, // Conflict
+    status: 409,
     message: 'User Has Already Exists!'
   },
   unauthorized: {
-    status: 401, // Unauthorized
+    status: 401,
     message: 'Unauthorized!'
   }
 }
@@ -64,19 +73,23 @@ const blogErrorType: Record<BlogErrorTypeKey, ErrorTypeItem> = {
   no_change: {
     status: 400,
     message: 'No Change!'
+  },
+  unauthorized: {
+    status: 401,
+    message: 'Unauthorized!'
   }
 }
 
-export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
-  ...userErrorType,
-  ...blogErrorType,
-
-  network_error: {
-    status: 500,
-    message: 'Network Error!'
+const projectErrorType: Record<ProjectErrorTypeKey, ErrorTypeItem> = {
+  page_is_required: {
+    status: 400,
+    message: 'Page Cannot Be Empty!'
   },
-
-  title_status_is_required: {
+  page_is_invalid: {
+    status: 400,
+    message: 'Page Is Invalid!'
+  },
+  title_or_status_is_required: {
     status: 400,
     message: 'title And Status Cannot Be Empty!'
   },
@@ -84,10 +97,34 @@ export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
     status: 400,
     message: 'Status Is Invalid!'
   },
+  id_is_invalid: {
+    status: 400,
+    message: 'Id Is Invalid!'
+  },
   project_not_exists: {
     status: 400,
     message: 'Project Dose Not Exists!'
   },
+  no_change: {
+    status: 400,
+    message: 'No Change!'
+  },
+  unauthorized: {
+    status: 401,
+    message: 'Unauthorized!'
+  }
+}
+
+export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
+  ...userErrorType,
+  ...blogErrorType,
+  ...projectErrorType,
+
+  network_error: {
+    status: 500,
+    message: 'Network Error!'
+  },
+
   time_is_required: {
     status: 400,
     message: 'Time Cannot Be Empty!'
