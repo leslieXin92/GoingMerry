@@ -16,9 +16,9 @@ connection.getConnection((err: Error | null, connection: PoolConnection) => {
 
 export const execute = connection.promise().execute.bind(connection.promise())
 
-export const clearDatabase = () => {
+export const clearDatabase = async () => {
   const tables = ['users', 'blogs', 'projects', 'tasks']
-  tables.forEach(async table => {
+  await Promise.all(tables.map(async table => {
     await connection.promise().execute(`DELETE FROM ${table}`)
-  })
+  }))
 }

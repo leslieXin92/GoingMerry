@@ -1,4 +1,4 @@
-import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
+import { useTest, queryInsert, useErrorReturn, useSuccessReturn } from '@/utils'
 import type { RegisterParams } from '@/types'
 
 describe('register', () => {
@@ -49,6 +49,13 @@ describe('register', () => {
   })
 
   test('user already exists', async () => {
+    await queryInsert({
+      table: 'users',
+      data: {
+        username: 'leslie',
+        password: 'leslie'
+      }
+    })
     const params = {
       username: 'leslie',
       password: 'leslie',

@@ -1,4 +1,4 @@
-import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
+import { useTest, queryInsert, useErrorReturn, useSuccessReturn, encrypt } from '@/utils'
 import type { LoginParams } from '@/types'
 
 describe('login', () => {
@@ -27,6 +27,13 @@ describe('login', () => {
   })
 
   test('password is incorrect', async () => {
+    await queryInsert({
+      table: 'users',
+      data: {
+        username: 'leslie',
+        password: encrypt('leslie')
+      }
+    })
     const username = 'leslie'
     const password = 'cabbage'
     const { status, body } = await testFn({ username, password })
@@ -35,10 +42,21 @@ describe('login', () => {
   })
 
   test('login successfully', async () => {
+    await queryInsert({
+      table: 'users',
+      data: {
+        username: 'leslie',
+        password: encrypt('leslie')
+      }
+    })
     const username = 'leslie'
     const password = 'leslie'
     const { status, body } = await testFn({ username, password })
     expect(status).toBe(200)
-    expect(body).toEqual(useSuccessReturn({ id: expect.any(Number), username, token: expect.any(String) }, 'Login Success!'))
+    expect(body).toEqual(useSuccessReturn({
+      id: expect.any(Number),
+      username,
+      token: expect.any(String)
+    }, 'Login Success!'))
   })
 })

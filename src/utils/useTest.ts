@@ -22,7 +22,8 @@ const setToken = (req: Test, userInfo?: Omit<UserInfo, any>) => {
 }
 
 export const useTest = <Params = unknown>(url: string, method: Method, params?: Params) => {
-  beforeAll(() => clearDatabase())
+  beforeEach(async () => await clearDatabase())
+  afterEach(async () => await clearDatabase())
 
   switch (method) {
     case 'get' || 'GET':
