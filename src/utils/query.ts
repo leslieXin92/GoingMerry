@@ -1,16 +1,40 @@
 import { execute } from '@/app/database'
 
-export const querySelect = <T = unknown>(query: { table: string, where: Record<string, any>, columns: string[] }) => {
+interface SelectQuery {
+  table: string,
+  where: Record<string, any>,
+  columns: string[]
+}
+
+interface InsertQuery {
+  table: string,
+  data: Record<string, any>
+}
+
+interface UpdateQuery {
+  table: string,
+  columns: string[],
+  where: Record<string, any>,
+  data: Record<string, any>
+}
+
+interface DeleteQuery {
+  table: string,
+  where: Record<string, any>
+}
+
+export const querySelect = async <T = unknown>(query: SelectQuery) => {
   const { table, where, columns } = query
   const statement = `
     SELECT ${columns.join(',')}
     FROM ${table}
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
    `
-  return execute(statement, Object.values(where)) as Promise<T[]>
+  const res = await execute(statement, Object.values(where))
+  return res[0] as unknown as Promise<T[]>
 }
 
-export const queryInsert = (query: { table: string, data: Record<string, any> }) => {
+export const queryInsert = (query: InsertQuery) => {
   const { table, data } = query
   const keys = Object.keys(data)
   const values = Object.values(data)
@@ -21,17 +45,17 @@ export const queryInsert = (query: { table: string, data: Record<string, any> })
   return execute(statement, values) as Promise<unknown>
 }
 
-export const queryUpdate = (query: { table: string, keys: string[], where: Record<string, any>, data: Record<string, any> }) => {
-  const { table, keys, where, data } = query
+export const queryUpdate = (query: UpdateQuery) => {
+  const { table, columns, where, data } = query
   const statement = `
     UPDATE ${table}
-    SET ${keys.map(key => `${key} = ?`).join(',')}
+    SET ${columns.map(column => `${column} = ?`).join(',')}
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
   `
   return execute(statement, [...Object.values(data), ...Object.values(where)]) as Promise<unknown>
 }
 
-export const queryDelete = (query: { table: string, where: Record<string, any> }) => {
+export const queryDelete = (query: DeleteQuery) => {
   const { table, where } = query
   const statement = `
     DELETE FROM ${table}

@@ -22,17 +22,3 @@ export const clearDatabase = () => {
     await connection.promise().execute(`DELETE FROM ${table}`)
   })
 }
-
-const insert = (table: string, data: Record<string, any>) => {
-  const keys = Object.keys(data)
-  const values = Object.values(data)
-  const sql = `INSERT INTO ${table} (${keys.join(',')}) VALUES (${keys.map(() => '?').join(',')})`
-  return execute(sql, values)
-}
-
-const select = (table: string, query: { keys: string[], where: Record<string, any> }) => {
-  const { keys, where } = query
-  const sql = `SELECT ${keys.join(',')} FROM ${table} WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}`
-  return execute(sql, Object.values(where))
-}
-
