@@ -2,7 +2,7 @@ import { execute } from '@/app/database'
 
 interface SelectQuery {
   table: string,
-  where: Record<string, any>,
+  where?: Record<string, any>,
   columns: string[]
 }
 
@@ -13,9 +13,8 @@ interface InsertQuery {
 
 interface UpdateQuery {
   table: string,
-  columns: string[],
   where: Record<string, any>,
-  data: Record<string, any>
+  update: Record<string, any>
 }
 
 interface DeleteQuery {
@@ -24,17 +23,17 @@ interface DeleteQuery {
 }
 
 export const querySelect = async <T = unknown>(query: SelectQuery) => {
-  const { table, where, columns } = query
+  const { table, where = {}, columns } = query
   const statement = `
     SELECT ${columns.join(',')}
     FROM ${table}
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
    `
   const res = await execute(statement, Object.values(where))
-  return res[0] as unknown as Promise<T[]>
+  return res[0] as unknown as Promise<T>
 }
 
-export const queryInsert = (query: InsertQuery) => {
+export const queryInsert = async (query: InsertQuery) => {
   const { table, data } = query
   const keys = Object.keys(data)
   const values = Object.values(data)
@@ -42,24 +41,24 @@ export const queryInsert = (query: InsertQuery) => {
     INSERT INTO ${table}
     (${keys.join(',')}) VALUES (${keys.map(() => '?').join(',')})
   `
-  return execute(statement, values) as Promise<unknown>
+  await execute(statement, values)
 }
 
-export const queryUpdate = (query: UpdateQuery) => {
-  const { table, columns, where, data } = query
+export const queryUpdate = async (query: UpdateQuery) => {
+  const { table, where, update } = query
   const statement = `
     UPDATE ${table}
-    SET ${columns.map(column => `${column} = ?`).join(',')}
+    SET ${Object.keys(update).map(key => `${key} = ?`).join(',')}
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
   `
-  return execute(statement, [...Object.values(data), ...Object.values(where)]) as Promise<unknown>
+  await execute(statement, [...Object.values(update), ...Object.values(where)])
 }
 
-export const queryDelete = (query: DeleteQuery) => {
+export const queryDelete = async (query: DeleteQuery) => {
   const { table, where } = query
   const statement = `
     DELETE FROM ${table}
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
   `
-  return execute(statement, Object.values(where)) as Promise<unknown>
+  await execute(statement, Object.values(where))
 }

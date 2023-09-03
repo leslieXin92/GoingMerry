@@ -1,45 +1,42 @@
-import { execute } from '@/app/database'
+import { querySelect, queryInsert, queryUpdate, queryDelete } from '@/utils'
 import type { BlogItem, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 
-export const createBlog = async (params: CreateBlogParams) => {
-  const { title, content, type } = params
-  const statement = `INSERT INTO blogs (title, content, type) VALUES (?, ?, ?);`
-  await execute(statement, [title, content, type])
-}
-
 export const getBlogList = async () => {
-  const getListStatement = `
-    SELECT id, type, title, createAt
-    FROM blogs
-  `
-  const [blogList] = await execute(getListStatement, []) as unknown as Omit<BlogItem[], 'content'>[]
-  return blogList
+  return await querySelect<Omit<BlogItem, 'content'>[]>({
+    table: 'blogs',
+    columns: ['id', 'type', 'title', 'createAt']
+  })
 }
 
 export const getBlogItem = async (id: string) => {
-  const statement = `
-    SELECT id, type, title, content, createAt
-    FROM blogs
-    WHERE id = ?;
-  `
-  const [blogItem] = await execute(statement, [id]) as unknown as BlogItem[][]
-  return blogItem[0]
+  const blogs = await querySelect<BlogItem[]>({
+    table: 'blogs',
+    where: { id },
+    columns: ['id', 'type', 'title', 'content', 'createAt']
+  })
+  return blogs.length ? blogs[0] : null
+}
+
+export const createBlog = async (params: CreateBlogParams) => {
+  const { title, content, type } = params
+  await queryInsert({
+    table: 'blogs',
+    data: { title, content, type }
+  })
 }
 
 export const updateBlog = async (params: UpdateBlogItemParams & { id: string }) => {
   const { id, title, content, type } = params
-  const statement = `
-    UPDATE blogs
-    SET title = ?, content = ?, type = ?
-    WHERE id = ?;
-  `
-  await execute(statement, [title, content, type, id])
+  await queryUpdate({
+    table: 'blogs',
+    where: { id },
+    update: { title, content, type }
+  })
 }
 
 export const deleteBlog = async (id: string) => {
-  const statement = `
-    DELETE FROM blogs
-    WHERE id = ?;
-  `
-  await execute(statement, [id])
+  await queryDelete({
+    table: 'blogs',
+    where: { id }
+  })
 }
