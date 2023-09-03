@@ -1,4 +1,4 @@
-import execute from '@/app/database'
+import { execute } from '@/app/database'
 import type { TaskItem, TaskStatus, CreateTaskParams, UpdateTaskParams } from '@/types'
 
 export const getTaskList = async (time: string[], status?: TaskStatus) => {

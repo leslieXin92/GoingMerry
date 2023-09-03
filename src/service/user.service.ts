@@ -1,4 +1,4 @@
-import execute from '@/app/database'
+import { execute } from '@/app/database'
 import type { UserInfo } from '@/types'
 
 export const getUserInfo = async (name: string): Promise<UserInfo | null> => {

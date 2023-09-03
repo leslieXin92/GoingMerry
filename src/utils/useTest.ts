@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { sign } from 'jsonwebtoken'
 import app from '@/app'
+import { clearDatabase } from '@/app/database'
 import { PRIVATE_KEY } from '@/app/config'
 import type { Test } from 'supertest'
 import type { UserInfo } from '@/types'
@@ -21,6 +22,8 @@ const setToken = (req: Test, userInfo?: Omit<UserInfo, any>) => {
 }
 
 export const useTest = <Params = unknown>(url: string, method: Method, params?: Params) => {
+  beforeAll(() => clearDatabase())
+
   switch (method) {
     case 'get' || 'GET':
       return (data: Partial<Params> = params ?? {}, isLogin: boolean = false, userInfo: Omit<UserInfo, 'password'> = initUserInfo) => {

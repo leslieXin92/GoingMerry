@@ -1,4 +1,4 @@
-import execute from '@/app/database'
+import { execute } from '@/app/database'
 import type { ProjectItem, GetProjectListParams, CreateProjectParams, UpdateProjectParams } from '@/types'
 
 export const getProjectList = async (params: Partial<GetProjectListParams>) => {

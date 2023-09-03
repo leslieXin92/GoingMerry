@@ -1,4 +1,4 @@
-import execute from '@/app/database'
+import { execute } from '@/app/database'
 import type { BlogItem, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 
 export const createBlog = async (params: CreateBlogParams) => {
