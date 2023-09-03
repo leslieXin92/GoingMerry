@@ -38,7 +38,7 @@ export const useTest = <Params = unknown>(url: string, method: Method, params?: 
 
     case 'post' || 'POST':
       return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {
-        const req = request(app.callback()).post(url).send(data)
+        const req = request(app.callback()).post(url).send(data ?? params ?? {})
         if (userInfo) await handleAuth(req, userInfo)
         return req
       }
