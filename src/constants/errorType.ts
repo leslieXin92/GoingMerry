@@ -1,4 +1,4 @@
-import type { UserErrorTypeKey, BlogErrorTypeKey, ProjectErrorTypeKey, ErrorTypeKey } from '@/types'
+import type { UserErrorTypeKey, BlogErrorTypeKey, ProjectErrorTypeKey, FileErrorTypeKey, ErrorTypeKey } from '@/types'
 
 interface ErrorTypeItem {
   status: number
@@ -115,10 +115,18 @@ const projectErrorType: Record<ProjectErrorTypeKey, ErrorTypeItem> = {
   }
 }
 
+const fileErrorType: Record<FileErrorTypeKey, ErrorTypeItem> = {
+  image_format_is_invalid: {
+    status: 400,
+    message: 'Image Format Is Invalid!'
+  }
+}
+
 export const errorType: Record<ErrorTypeKey, ErrorTypeItem> = {
   ...userErrorType,
   ...blogErrorType,
   ...projectErrorType,
+  ...fileErrorType,
 
   network_error: {
     status: 500,

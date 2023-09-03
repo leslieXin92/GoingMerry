@@ -4,7 +4,7 @@ import { useThrowError, encrypt, verifyWriteList } from '@/utils'
 import { PUBLIC_KEY } from '@/app/config'
 import type { Context, Next } from 'koa'
 import type { JwtPayload } from 'jsonwebtoken'
-import type { LoginParams, RegisterParams } from '@/types'
+import type { ErrorTypeKey, LoginParams, RegisterParams } from '@/types'
 
 // Verify user submitted params for login
 export const verifyLoginParams = async (ctx: Context, next: Next) => {
@@ -55,8 +55,12 @@ export const verifyAuth = async (ctx: Context, next: Next) => {
     const token = authorization.replace('Bearer ', '')
     const user = jwtVerify(token, PUBLIC_KEY, { algorithms: ['RS384'] }) as JwtPayload
     if (!verifyWriteList(user.username)) return useThrowError(ctx, 'unauthorized')
-    await next()
   } catch (err) {
     return useThrowError(ctx, 'unauthorized')
+  }
+  try {
+    await next()
+  } catch (err) {
+    return useThrowError(ctx, (err as Error).message as ErrorTypeKey)
   }
 }

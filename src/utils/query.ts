@@ -1,6 +1,6 @@
 import { execute } from '@/app/database'
 
-type Table = 'users' | 'blogs' | 'projects' | 'tasks'
+type Table = 'users' | 'blogs' | 'projects' | 'tasks' | 'files'
 
 interface SelectQuery {
   table: Table,

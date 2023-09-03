@@ -27,6 +27,9 @@ export type ProjectErrorTypeKey =
   | 'no_change'
   | 'unauthorized'
 
+export type FileErrorTypeKey =
+  | 'image_format_is_invalid'
+
 export type ErrorTypeKey =
   | UserErrorTypeKey
   | BlogErrorTypeKey
