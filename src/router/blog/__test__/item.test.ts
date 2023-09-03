@@ -1,66 +1,137 @@
-import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
+import { useTest, useErrorReturn, useSuccessReturn, queryInsert } from '@/utils'
 
 describe('get blog item', () => {
+  const testInvalidId = useTest('/blog/testId', 'get')
   test('invalid id', async () => {
-    const testFn = useTest('/blog/testId', 'get')
-    const { status, body } = await testFn()
+    const { status, body } = await testInvalidId()
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
   })
 
+  const testNoId = useTest('/blog/1', 'get')
   test('blog not exists', async () => {
-    const testFn = useTest('/blog/999', 'get')
-    const { status, body } = await testFn()
+    const { status, body } = await testNoId()
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
   })
 
-  test('not login view private blog', async () => {
-    const testFn = useTest('/blog/9', 'get')
-    const { status, body } = await testFn()
-    expect(status).toBe(401)
-    expect(body).toEqual(useErrorReturn('Unauthorized!'))
-  })
-
+  const testNotLoginPublic = useTest('/blog/1', 'get')
   test('not login view public blog', async () => {
-    const testFn = useTest('/blog/4', 'get')
-    const { status, body } = await testFn()
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'test',
+        content: 'test',
+        type: 'public'
+      }
+    })
+    const { status, body } = await testNotLoginPublic()
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn({
-      id: 4,
-      author: 1,
-      title: expect.any(String),
-      content: expect.any(String),
+      id: 1,
+      title: 'test',
+      content: 'test',
       type: 'public',
       createAt: expect.any(String)
     }))
   })
 
-  test('login view private blog', async () => {
-    const testFn = useTest('/blog/9', 'get')
-    const { status, body } = await testFn(undefined, true)
+  const testNotLoginPrivate = useTest('/blog/1', 'get')
+  test('not login view private blog', async () => {
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'test',
+        content: 'test',
+        type: 'private'
+      }
+    })
+    const { status, body } = await testNotLoginPrivate()
+    expect(status).toBe(401)
+    expect(body).toEqual(useErrorReturn('Unauthorized!'))
+  })
+
+  const testWriteListPublic = useTest('/blog/1', 'get')
+  test('login view public blog', async () => {
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'test',
+        content: 'test',
+        type: 'public'
+      }
+    })
+    const { status, body } = await testWriteListPublic(undefined, { id: 1, username: 'leslie' })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn({
-      id: 9,
-      author: 1,
-      title: expect.any(String),
-      content: expect.any(String),
+      id: 1,
+      title: 'test',
+      content: 'test',
+      type: 'public',
+      createAt: expect.any(String)
+    }))
+  })
+
+  const testWriteListPrivate = useTest('/blog/1', 'get')
+  test('login view private blog', async () => {
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'test',
+        content: 'test',
+        type: 'private'
+      }
+    })
+    const { status, body } = await testWriteListPrivate(undefined, { id: 1, username: 'leslie' })
+    expect(status).toBe(200)
+    expect(body).toEqual(useSuccessReturn({
+      id: 1,
+      title: 'test',
+      content: 'test',
       type: 'private',
       createAt: expect.any(String)
     }))
   })
 
+  const testNotWriteListPublic = useTest('/blog/1', 'get')
   test('login view public blog', async () => {
-    const testFn = useTest('/blog/4', 'get')
-    const { status, body } = await testFn(undefined, true)
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'test',
+        content: 'test',
+        type: 'public'
+      }
+    })
+    const { status, body } = await testNotWriteListPublic(undefined, { id: 1, username: 'yahoo' })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn({
-      id: 4,
-      author: 1,
-      title: expect.any(String),
-      content: expect.any(String),
+      id: 1,
+      title: 'test',
+      content: 'test',
       type: 'public',
       createAt: expect.any(String)
     }))
+  })
+
+  const testNotWriteListPrivate = useTest('/blog/1', 'get')
+  test('login view private blog', async () => {
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'test',
+        content: 'test',
+        type: 'private'
+      }
+    })
+    const { status, body } = await testNotWriteListPrivate(undefined, { id: 1, username: 'yahoo' })
+    expect(status).toBe(401)
+    expect(body).toEqual(useErrorReturn('Unauthorized!'))
   })
 })

@@ -1,11 +1,22 @@
-import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
-import type { CreateBlogParams } from '@/types'
+import { useTest, useErrorReturn, useSuccessReturn, querySelect } from '@/utils'
+import type { BlogType, CreateBlogParams } from '@/types'
 
 describe('create blog', () => {
   const testFn = useTest<CreateBlogParams>('/blog', 'post')
 
-  test('no token or invalid token', async () => {
+  test('not login', async () => {
     const { status, body } = await testFn()
+    expect(status).toBe(401)
+    expect(body).toEqual(useErrorReturn('Unauthorized!'))
+  })
+
+  test('not in write list', async () => {
+    const params: CreateBlogParams = {
+      title: 'title',
+      content: 'test',
+      type: 'public'
+    }
+    const { status, body } = await testFn(params, { id: 1, username: 'yahoo' })
     expect(status).toBe(401)
     expect(body).toEqual(useErrorReturn('Unauthorized!'))
   })
@@ -16,7 +27,7 @@ describe('create blog', () => {
       content: 'test',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testFn(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
@@ -27,7 +38,7 @@ describe('create blog', () => {
       content: '',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testFn(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
@@ -36,9 +47,9 @@ describe('create blog', () => {
     const params = {
       title: 'title',
       content: 'content',
-      type: ''
+      type: '' as BlogType
     }
-    const { status, body } = await testFn(params as CreateBlogParams, true)
+    const { status, body } = await testFn(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
@@ -47,9 +58,9 @@ describe('create blog', () => {
     const params = {
       title: 'title',
       content: 'content',
-      type: 'otherType'
+      type: 'otherType' as BlogType
     }
-    const { status, body } = await testFn(params as CreateBlogParams, true)
+    const { status, body } = await testFn(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Type Is Invalid!'))
   })
@@ -60,8 +71,14 @@ describe('create blog', () => {
       content: 'content',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testFn(params, { id: 1, username: 'leslie' })
+    const blogs = await querySelect({
+      table: 'blogs',
+      where: { title: params.title },
+      columns: ['title', 'content', 'type']
+    })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn(null, 'Create Success!'))
+    expect(blogs).toEqual([params])
   })
 })

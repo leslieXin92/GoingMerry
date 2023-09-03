@@ -1,132 +1,150 @@
-import { useTest, useErrorReturn, useSuccessReturn } from '@/utils'
+import { useTest, useErrorReturn, useSuccessReturn, queryInsert, querySelect } from '@/utils'
 import type { UpdateBlogItemParams } from '@/types'
+import { BlogType } from '@/types'
 
 describe('update blog', () => {
-
+  const testNotLogin = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('not login', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
-    const { status, body } = await testFn()
+    const { status, body } = await testNotLogin()
     expect(status).toBe(401)
     expect(body).toEqual(useErrorReturn('Unauthorized!'))
   })
 
+  const testNotWriteList = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
+  test('not in write list', async () => {
+    const params: UpdateBlogItemParams = {
+      title: 'test',
+      content: 'test',
+      type: 'public'
+    }
+    const { status, body } = await testNotWriteList(params, { id: 1, username: 'yahoo' })
+    expect(status).toBe(401)
+    expect(body).toEqual(useErrorReturn('Unauthorized!'))
+  })
+
+  const testNoTitle = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('no title', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
     const params: UpdateBlogItemParams = {
       title: '',
       content: 'test',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testNoTitle(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
 
+  const testNoContent = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('no content', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: '',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testNoContent(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
 
+  const testNoType = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('no type', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
     const params = {
       title: 'title',
       content: 'content',
-      type: ''
+      type: '' as BlogType
     }
-    const { status, body } = await testFn(params as UpdateBlogItemParams, true)
+    const { status, body } = await testNoType(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
 
+  const testInvalidType = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('invalid type', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
     const params = {
       title: 'title',
       content: 'content',
-      type: 'otherType'
+      type: 'otherType' as BlogType
     }
-    const { status, body } = await testFn(params as UpdateBlogItemParams, true)
+    const { status, body } = await testInvalidType(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Type Is Invalid!'))
   })
 
+  const testInvalidId = useTest<UpdateBlogItemParams>('/blog/xxx', 'patch')
   test('invalid id', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/xxx', 'patch')
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testInvalidId(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
   })
 
+  const testNotExists = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('blog not exists', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/999', 'patch')
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testNotExists(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
   })
 
+  const testNoChange = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
   test('no change', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/3', 'patch')
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'title',
+        content: 'content',
+        type: 'public'
+      }
+    })
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
       type: 'public'
     }
-    const { status, body } = await testFn(params, true)
+    const { status, body } = await testNoChange(params, { id: 1, username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('No Change!'))
   })
 
-  test('ordinary people change their own blog', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/16', 'patch')
+
+  const testUpdateSuccess = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
+  test('update success', async () => {
+    await queryInsert({
+      table: 'blogs',
+      data: {
+        id: 1,
+        title: 'title',
+        content: 'content',
+        type: 'public'
+      }
+    })
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
       type: 'private'
     }
-    const { status, body } = await testFn(params, true, { id: 13, username: 'cabbage' })
+    const { status, body } = await testUpdateSuccess(params, { id: 1, username: 'leslie' })
+    const blogs = await querySelect({
+      table: 'blogs',
+      where: { id: 1 },
+      columns: ['id', 'title', 'content', 'type']
+    })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn(null, 'Update Success!'))
-  })
-
-  test('ordinary people change someone else\'s blog', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/3', 'patch')
-    const params: UpdateBlogItemParams = {
+    expect(blogs).toEqual([{
+      id: 1,
       title: 'title',
       content: 'content',
-      type: 'public'
-    }
-    const { status, body } = await testFn(params, true, { id: 13, username: 'cabbage' })
-    expect(status).toBe(401)
-    expect(body).toEqual(useErrorReturn('Unauthorized!'))
-  })
-
-  test('leslie change someone else\'s blog', async () => {
-    const testFn = useTest<UpdateBlogItemParams>('/blog/16', 'patch')
-    const params: UpdateBlogItemParams = {
-      title: 'title',
-      content: 'content',
-      type: 'public'
-    }
-    const { status, body } = await testFn(params, true)
-    expect(status).toBe(200)
-    expect(body).toEqual(useSuccessReturn(null, 'Update Success!'))
+      type: 'private'
+    }])
   })
 })

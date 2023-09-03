@@ -24,11 +24,14 @@ interface DeleteQuery {
 
 export const querySelect = async <T = unknown>(query: SelectQuery) => {
   const { table, where = {}, columns } = query
+  const whereClause = Object.keys(where).length > 0
+    ? `WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}`
+    : ''
   const statement = `
     SELECT ${columns.join(',')}
     FROM ${table}
-    WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
-   `
+    ${whereClause}
+ `
   const res = await execute(statement, Object.values(where))
   return res[0] as unknown as Promise<T>
 }

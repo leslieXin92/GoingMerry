@@ -1,4 +1,11 @@
-import { useTest, queryInsert, useErrorReturn, useSuccessReturn } from '@/utils'
+import {
+  encrypt,
+  useTest,
+  queryInsert,
+  useErrorReturn,
+  useSuccessReturn,
+  querySelect
+} from '@/utils'
 import type { RegisterParams } from '@/types'
 
 describe('register', () => {
@@ -73,9 +80,16 @@ describe('register', () => {
       confirmPassword: 'leslie'
     }
     const { status, body } = await testFn(params)
+    const users = await querySelect({
+      table: 'users',
+      where: { username: 'leslie' },
+      columns: ['username', 'password']
+    })
     expect(status).toBe(200)
-    expect(body).toEqual(
-      useSuccessReturn(null, 'Register Success!')
-    )
+    expect(body).toEqual(useSuccessReturn(null, 'Register Success!'))
+    expect(users).toEqual([{
+      username: 'leslie',
+      password: encrypt('leslie')
+    }])
   })
 })
