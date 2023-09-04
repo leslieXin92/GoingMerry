@@ -28,12 +28,14 @@ export type ProjectErrorTypeKey =
   | 'unauthorized'
 
 export type FileErrorTypeKey =
+  | 'image_is_required'
   | 'image_format_is_invalid'
 
 export type ErrorTypeKey =
   | UserErrorTypeKey
   | BlogErrorTypeKey
   | ProjectErrorTypeKey
+  | FileErrorTypeKey
 
   | 'network_error'
 
