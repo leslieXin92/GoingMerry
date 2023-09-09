@@ -9,8 +9,8 @@ export interface ProjectItem {
   introduction?: string
   startAt?: string
   endAt?: string
-  createAt: string
-  updateAt: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface GetProjectListParams {

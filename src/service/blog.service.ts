@@ -4,7 +4,7 @@ import type { BlogItem, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 export const getBlogList = async () => {
   return await querySelect<Omit<BlogItem, 'content'>[]>({
     table: 'blogs',
-    columns: ['id', 'type', 'title', 'createAt']
+    columns: ['id', 'type', 'title', 'createdAt']
   })
 }
 
@@ -12,7 +12,7 @@ export const getBlogItem = async (id: string) => {
   const blogs = await querySelect<BlogItem[]>({
     table: 'blogs',
     where: { id },
-    columns: ['id', 'type', 'title', 'content', 'createAt']
+    columns: ['id', 'type', 'title', 'content', 'createdAt']
   })
   return blogs.length ? blogs[0] : null
 }

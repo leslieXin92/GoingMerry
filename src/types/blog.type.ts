@@ -5,7 +5,7 @@ export interface BlogItem {
   type: BlogType
   title: string
   content: string
-  createAt: string
+  createdAt: string
 }
 
 export interface CreateBlogParams {

@@ -9,7 +9,7 @@ export const handleGetProjectList = async (ctx: Context) => {
   const totalCount = totalProjectList.filter(project => status ? project.status === status : true).length
   const projectList = totalProjectList
     .filter(project => status ? project.status === status : true)
-    .sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime())
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice((parseInt(page) - 1) * 10, parseInt(page) * 10)
   ctx.body = useSuccessReturn({ projectList, totalCount })
 }

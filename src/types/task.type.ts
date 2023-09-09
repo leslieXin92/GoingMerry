@@ -8,8 +8,8 @@ export interface TaskItem {
   deadline?: string
   doneAt?: string
   canceledAt?: string
-  createAt: string
-  updateAt: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface GetTaskListParams {

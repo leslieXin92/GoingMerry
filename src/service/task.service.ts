@@ -4,19 +4,19 @@ import type { TaskItem, TaskStatus, CreateTaskParams, UpdateTaskParams } from '@
 export const getTaskList = async (time: string[], status?: TaskStatus) => {
   const statement = status
     ? `
-      SELECT id, title, category, status, deadline, doneAt, createAt
+      SELECT id, title, category, status, deadline, doneAt, createdAt
       FROM tasks
       WHERE doneAt >= ?
       AND doneAt <= ?
       AND status = ?
-      ORDER BY createAt esc;
+      ORDER BY createdAt esc;
     `
     : `
       SELECT id, category, title, status, doneAt
       FROM tasks
       WHERE doneAt >= ?
       AND doneAt <= ?
-      ORDER BY createAt esc;
+      ORDER BY createdAt esc;
     `
   const [taskList] = await execute(statement, [time[0], time[1]]) as unknown as TaskItem[][]
   return taskList

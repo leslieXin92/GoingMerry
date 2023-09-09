@@ -30,7 +30,7 @@ describe('get blog list', () => {
         title: 'title',
         content: 'content',
         type: 'public',
-        createAt: '2023-09-03'
+        createdAt: '2023-09-03'
       }
     })
     const { status, body } = await testFn({ page: '1', type: 'public' })

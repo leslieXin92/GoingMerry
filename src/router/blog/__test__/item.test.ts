@@ -33,7 +33,7 @@ describe('get blog item', () => {
       title: 'test',
       content: 'test',
       type: 'public',
-      createAt: expect.any(String)
+      createdAt: expect.any(String)
     }))
   })
 
@@ -71,7 +71,7 @@ describe('get blog item', () => {
       title: 'test',
       content: 'test',
       type: 'public',
-      createAt: expect.any(String)
+      createdAt: expect.any(String)
     }))
   })
 
@@ -93,7 +93,7 @@ describe('get blog item', () => {
       title: 'test',
       content: 'test',
       type: 'private',
-      createAt: expect.any(String)
+      createdAt: expect.any(String)
     }))
   })
 
@@ -115,7 +115,7 @@ describe('get blog item', () => {
       title: 'test',
       content: 'test',
       type: 'public',
-      createAt: expect.any(String)
+      createdAt: expect.any(String)
     }))
   })
 
