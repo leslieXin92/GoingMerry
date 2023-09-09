@@ -116,6 +116,10 @@ const projectErrorType: Record<ProjectErrorTypeKey, ErrorTypeItem> = {
 }
 
 const fileErrorType: Record<FileErrorTypeKey, ErrorTypeItem> = {
+  image_is_required: {
+    status: 400,
+    message: 'Image Cannot Be Empty!'
+  },
   image_format_is_invalid: {
     status: 400,
     message: 'Image Format Is Invalid!'
