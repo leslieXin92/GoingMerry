@@ -3,10 +3,10 @@ import { createUser } from '@/service'
 import { useSuccessReturn } from '@/utils'
 import { PRIVATE_KEY } from '@/app/config'
 import type { Context } from 'koa'
-import type { RegisterParams } from '@/types'
+import type { UserInfo, RegisterParams } from '@/types'
 
 export const handleLogin = async (ctx: Context) => {
-  const { id, username } = ctx.user
+  const { id, username } = ctx.user as UserInfo
   const token = sign({ id, username }, PRIVATE_KEY, {
     expiresIn: 60 * 60 * 24,
     algorithm: 'RS384'

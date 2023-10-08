@@ -1,11 +1,10 @@
-import { errorType } from '@/constants'
 import { useErrorReturn } from '@/utils'
 import type { Context } from 'koa'
-import { ErrorTypeKey } from '@/types'
 
+// Global error handler
 const errorHandler = (error: Error, ctx: Context) => {
-  ctx.status = errorType[error.message as ErrorTypeKey]?.status ?? 500
-  ctx.body = useErrorReturn(errorType[error.message as ErrorTypeKey]?.message ?? 'Unknown Error')
+  ctx.status = ctx.errorStatus
+  ctx.body = useErrorReturn(error.message)
 }
 
 export default errorHandler
