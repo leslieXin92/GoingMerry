@@ -44,7 +44,7 @@ describe('register', () => {
     expect(body).toEqual(useErrorReturn('Username Or Password Cannot Be Empty!'))
   })
 
-  test('password is not same', async () => {
+  test('passwords are different', async () => {
     const params = {
       username: 'leslie',
       password: 'leslie',
@@ -52,7 +52,7 @@ describe('register', () => {
     }
     const { status, body } = await testFn(params)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Password Is Not Same!'))
+    expect(body).toEqual(useErrorReturn('Passwords Are Different!'))
   })
 
   test('user already exists', async () => {

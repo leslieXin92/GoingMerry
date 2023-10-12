@@ -7,5 +7,6 @@ module.exports = {
   testMatch: ['**/__test__/**/*.test.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
-  }
+  },
+  detectOpenHandles: true
 }

@@ -8,14 +8,14 @@ export interface BlogItem {
   createdAt: string
 }
 
-export interface CreateBlogParams {
-  title: string
-  content: string
+export interface GetBlogListParams {
+  page: string
   type: BlogType
 }
 
-export interface GetBlogListParams {
-  page: string
+export interface CreateBlogParams {
+  title: string
+  content: string
   type: BlogType
 }
 

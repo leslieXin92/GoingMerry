@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { sign } from 'jsonwebtoken'
 import app from '@/app'
-import { clearDatabase } from '@/app/database'
+import { clearDatabase, endC, execute, startC } from '@/app/database'
 import { queryInsert } from '@/utils'
 import { PRIVATE_KEY } from '@/app/config'
 import type { Test } from 'supertest'
@@ -24,12 +24,12 @@ const handleAuth = async (req: Test, userInfo: Omit<UserInfo, 'password'>) => {
   req.set('Authorization', token)
 }
 
-export const useTest = <Params = unknown>(url: string, method: Method, params?: Params) => {
-  beforeEach(async () => await clearDatabase())
-  afterEach(async () => await clearDatabase())
-  beforeAll(async () => await clearDatabase())
-  afterAll(async () => await clearDatabase())
+beforeEach(async () => await clearDatabase())
+afterEach(async () => await clearDatabase())
+beforeAll(() => startC())
+afterAll(() => endC())
 
+export const useTest = <Params = unknown>(url: string, method: Method, params?: Params) => {
   switch (method) {
     case 'get' || 'GET':
       return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {

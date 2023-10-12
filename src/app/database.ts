@@ -16,6 +16,10 @@ connection.getConnection((err: Error | null, connection: PoolConnection) => {
 
 export const execute = connection.promise().execute.bind(connection.promise())
 
+export const startC = () => connection.getConnection(() => {})
+
+export const endC = () => connection.end()
+
 export const clearDatabase = async () => {
   const tables = ['users', 'blogs', 'projects', 'tasks']
   await Promise.all(tables.map(async table => {

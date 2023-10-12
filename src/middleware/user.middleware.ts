@@ -1,10 +1,10 @@
 import { verify as jwtVerify } from 'jsonwebtoken'
 import { getUserInfo } from '@/service'
-import { useThrowError, throwError, encrypt, verifyWriteList } from '@/utils'
+import { throwError, encrypt, verifyWriteList } from '@/utils'
 import { PUBLIC_KEY } from '@/app/config'
 import type { Context, Next } from 'koa'
 import type { JwtPayload } from 'jsonwebtoken'
-import type { ErrorTypeKey, LoginParams, RegisterParams } from '@/types'
+import type { LoginParams, RegisterParams } from '@/types'
 
 // Verify user submitted params for login
 export const verifyLoginParams = async (ctx: Context, next: Next) => {
@@ -12,7 +12,7 @@ export const verifyLoginParams = async (ctx: Context, next: Next) => {
   if (!username || !password) return throwError(ctx, 'Username Or Password Cannot Be Empty!', 400)
   const user = await getUserInfo(username)
   if (!user) return throwError(ctx, 'User Does Not Exists!', 400)
-  if (user.password !== encrypt(password)) return throwError(ctx, 'Password Was Incorrect!', 400)
+  if (user.password !== encrypt(password)) return throwError(ctx, 'Password Is Incorrect!', 400)
   ctx.user = user
   await next()
 }
@@ -21,7 +21,7 @@ export const verifyLoginParams = async (ctx: Context, next: Next) => {
 export const verifyRegisterParams = async (ctx: Context, next: Next) => {
   const { username, password, confirmPassword } = ctx.request.body as Partial<RegisterParams>
   if (!username || !password || !confirmPassword) return throwError(ctx, 'Username Or Password Cannot Be Empty!', 400)
-  if (password !== confirmPassword) return throwError(ctx, 'Passwords Were Different!', 400)
+  if (password !== confirmPassword) return throwError(ctx, 'Passwords Are Different!', 400)
   const user = await getUserInfo(username)
   if (user) return throwError(ctx, 'User Has Already Exists!', 409)
   await next()
@@ -58,9 +58,5 @@ export const verifyAuth = async (ctx: Context, next: Next) => {
   } catch (err) {
     return throwError(ctx, 'Unauthorized!', 401)
   }
-  try {
-    await next()
-  } catch (err) {
-    return useThrowError(ctx, (err as Error).message as ErrorTypeKey)
-  }
+  await next()
 }
