@@ -1,12 +1,17 @@
 module.exports = {
   testEnvironment: 'node',
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest'
-  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testMatch: ['**/__test__/**/*.test.ts'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
-  },
-  detectOpenHandles: true
+  setupFilesAfterEnv: ['./jest.setup.js'],
+  moduleNameMapper: { '^@/(.*)$': '<rootDir>/src/$1' },
+  detectOpenHandles: true,
+  transformIgnorePatterns: ['/node_modules/(?!(your-dependency-to-keep-esm)/)'],
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest', {
+        tsconfig: 'tsconfig.json',
+        esModuleInterop: true
+      }
+    ]
+  }
 }
