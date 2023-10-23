@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'GoingMerry',
-      script: './index.ts',
+      script: './src/main.ts',
       interpreter: './node_modules/.bin/ts-node',
       watch: true,
       exec_mode: 'cluster',
