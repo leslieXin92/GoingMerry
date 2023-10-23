@@ -18,11 +18,10 @@ const imageFilter = (req: IncomingMessage, file: File, cb: (error: (Error | null
   if (mimetype.startsWith('image')) {
     cb(null, true)
   } else {
-    // 文件格式错误
     cb(new Error('image_format_is_invalid'), false)
   }
 }
 
-const imagesUpload = multer({ storage: storage, fileFilter: imageFilter })
+const imagesUpload = multer({ storage, fileFilter: imageFilter })
 
 export const savaImage = imagesUpload.single('image')
