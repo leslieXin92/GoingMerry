@@ -12,11 +12,7 @@ app.use(bodyParse())
 
 app.use(staticFiles(path.resolve(__dirname, '..', '../public')))
 
-app.use(cors({
-  origin: 'http://120.25.247.55',
-  allowMethods: ['GET', 'POST', 'FETCH', 'DELETE'],
-  credentials: true  // 允许发送身份验证信息（例如cookies）
-}))
+app.use(cors())
 
 useRoutes(app)
 
