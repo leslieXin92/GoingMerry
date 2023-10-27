@@ -6,12 +6,12 @@
 
 #### [线上地址](http://120.25.247.55/home)
 
-#### [后端仓库地址](https://github.com/leslieXin92/GoingMerry)
+#### [前端仓库地址](https://github.com/leslieXin92/ThousandSunny)
 
 ## ~~一些废话~~
 
 此项目为个人网站后端，于``2023-07-24``立项，命名为``黄金梅里号``
-，灵感出自于海贼王。梅里号是承载草帽海贼团的第一艘船，后因难以修补被废弃，但优秀的Franky还是将梅里号的意志保留了下来，转接到了``万里阳光号``
+，灵感来自于海贼王。梅里号是承载草帽海贼团的第一艘船，后因难以修补被废弃，但优秀的Franky还是将梅里号的意志保留了下来，转接到了``万里阳光号``
 中。万里阳光号见证了草帽海贼团一路的成长，其背后也有黄金梅里号的意念，在一直为他们保驾护航。
 
 ## 技术选型
@@ -52,7 +52,7 @@
 1. 封装useReturn来统一接口返回的数据结构
 
  ```typescript
-  export const useReturn = <Data = {}>(code: number, data: Data, msg: string) => {
+export const useReturn = <Data = {}>(code: number, data: Data, msg: string) => {
   return { code, data, msg }
 }
 
