@@ -2,3 +2,4 @@
 **/coverage
 **/dist
 **/public/images/*
+.env

@@ -1,1 +1,1 @@
-export const writeList = ['Leslie', 'cabbage']
+export const writeList = ['Leslie', 'Cabbage', 'Lyle', 'Jonlyes'] as const
