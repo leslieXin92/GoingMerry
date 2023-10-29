@@ -26,12 +26,6 @@ jobs:
           export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
           export MYSQL_USER=${{ secrets.MYSQL_USER }}
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          echo "NODE_ENV=development" >> $GITHUB_ENV
-          echo "MYSQL_HOST=$YOUR_MYSQL_HOST" >> $GITHUB_ENV
-          echo "MYSQL_PORT=$YOUR_MYSQL_PORT" >> $GITHUB_ENV
-          echo "MYSQL_DATABASE=$YOUR_MYSQL_DATABASE" >> $GITHUB_ENV
-          echo "MYSQL_USER=$YOUR_MYSQL_USER" >> $GITHUB_ENV
-          echo "MYSQL_PASSWORD=$YOUR_MYSQL_PASSWORD" >> $GITHUB_ENV 
           npm test
         env:
           NODE_ENV: test
