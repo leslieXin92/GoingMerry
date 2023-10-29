@@ -1,4 +1,4 @@
-import { execute } from '@/app/database'
+import { useDatabase } from '@/app/database'
 
 type Table = 'users' | 'blogs' | 'projects' | 'tasks' | 'files'
 
@@ -25,6 +25,8 @@ interface DeleteQuery {
 }
 
 export const querySelect = async <T = unknown>(query: SelectQuery) => {
+  const { connectDatabase, disconnectDatabase, execute } = useDatabase()
+  await connectDatabase()
   const { table, where = {}, columns } = query
   const whereClause = Object.keys(where).length > 0
     ? `WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}`
@@ -35,10 +37,13 @@ export const querySelect = async <T = unknown>(query: SelectQuery) => {
     ${whereClause}
  `
   const res = await execute(statement, Object.values(where))
+  await disconnectDatabase()
   return res[0] as unknown as Promise<T>
 }
 
 export const queryInsert = async (query: InsertQuery) => {
+  const { connectDatabase, disconnectDatabase, execute } = useDatabase()
+  await connectDatabase()
   const { table, data } = query
   const keys = Object.keys(data)
   const values = Object.values(data)
@@ -47,9 +52,12 @@ export const queryInsert = async (query: InsertQuery) => {
     (${keys.join(',')}) VALUES (${keys.map(() => '?').join(',')})
   `
   await execute(statement, values)
+  await disconnectDatabase()
 }
 
 export const queryUpdate = async (query: UpdateQuery) => {
+  const { connectDatabase, disconnectDatabase, execute } = useDatabase()
+  await connectDatabase()
   const { table, where, update } = query
   const statement = `
     UPDATE ${table}
@@ -57,13 +65,17 @@ export const queryUpdate = async (query: UpdateQuery) => {
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
   `
   await execute(statement, [...Object.values(update), ...Object.values(where)])
+  await disconnectDatabase()
 }
 
 export const queryDelete = async (query: DeleteQuery) => {
+  const { connectDatabase, disconnectDatabase, execute } = useDatabase()
+  await connectDatabase()
   const { table, where } = query
   const statement = `
     DELETE FROM ${table}
     WHERE ${Object.keys(where).map(key => `${key} = ?`).join(' AND ')}
   `
   await execute(statement, Object.values(where))
+  await disconnectDatabase()
 }

@@ -2,7 +2,15 @@ import fs from 'fs'
 import path from 'path'
 import dotenv from 'dotenv'
 
-dotenv.config()
+type EnvType = 'test' | 'development' | 'production'
+
+const dotEnvPathMap = {
+  test: '.env.production.test',
+  development: '.env.production.development',
+  production: '.env.production.production'
+} as const
+
+dotenv.config({ path: dotEnvPathMap[process.env.NODE_ENV as EnvType] })
 
 export const APP_HOST = process.env.APP_HOST
 export const APP_PORT = process.env.APP_PORT

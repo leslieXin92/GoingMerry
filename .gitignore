@@ -2,4 +2,6 @@
 **/coverage
 **/dist
 **/public/images/*
-.env
+.env.test
+.env.development
+.env.production
