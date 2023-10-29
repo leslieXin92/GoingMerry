@@ -5,9 +5,9 @@ import dotenv from 'dotenv'
 type EnvType = 'test' | 'development' | 'production'
 
 const dotEnvPathMap = {
-  test: '.env.production.test',
-  development: '.env.production.development',
-  production: '.env.production.production'
+  test: '.env.test',
+  development: '.env.development',
+  production: '.env.production'
 } as const
 
 dotenv.config({ path: dotEnvPathMap[process.env.NODE_ENV as EnvType] })
