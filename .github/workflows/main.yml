@@ -1,6 +1,7 @@
 name: CI
 
 on: [ push ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -8,10 +9,28 @@ jobs:
       matrix:
         node-version: [ 18.x ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
       - run: npm install
-      - run: npm test
+
+      - name: Set up environment variables
+        run: |
+          export NODE_ENV=test
+          export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
+          export MYSQL_PORT=${{ secrets.MYSQL_PORT }}
+          export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+          export MYSQL_USER=${{ secrets.MYSQL_USER }}
+          export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          npm test
+        env:
+          NODE_ENV: test
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
