@@ -12,13 +12,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Install Dependencies
       - run: npm install
 
-      - name: Set up environment variables
+      - name: Setup Environment Variables
         run: |
           export NODE_ENV=test
           export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
@@ -26,7 +27,6 @@ jobs:
           export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
           export MYSQL_USER=${{ secrets.MYSQL_USER }}
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          npm test
         env:
           NODE_ENV: test
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -34,3 +34,6 @@ jobs:
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
+      - name: Run Tests
+        run: npm test
