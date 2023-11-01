@@ -1,6 +1,6 @@
 const { useDatabase } = require('./src/app/database')
 
-const { connectDatabase, clearDatabase, disconnectDatabase } = useDatabase()
+const { clearDatabase, disconnectDatabase } = useDatabase()
 
 afterEach(async () => {
   await clearDatabase()

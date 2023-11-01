@@ -44,12 +44,8 @@ export const handleUpdateBlog = async (ctx: Context) => {
 export const handleDeleteBlog = async (ctx: Context) => {
   const { id } = ctx.params
   if (isNaN(parseInt(id))) return throwError(ctx, 'Id Is Invalid!', 400)
-  try {
-    const blogItem = await getBlogItem(id)
+  const blogItem = await getBlogItem(id)
   if (!blogItem) return throwError(ctx, 'Blog Dose Not Exists!', 400)
-  } catch (e) {
-    console.log(e)
-  }
   await deleteBlog(id)
   ctx.body = useSuccessReturn(null, 'Delete Success!')
 }

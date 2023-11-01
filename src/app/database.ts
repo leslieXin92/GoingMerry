@@ -12,8 +12,8 @@ export const useDatabase = () => {
 
   const connectDatabase = async () => {
     connection.getConnection((err: Error | null, connection: PoolConnection) => {
-      if (err) return console.log(`\x1b[41m\x1b[30m\x1b[1m ⛈️ ⛈️ GoingMerry failed to set sail! \x1b[0m \x1b[41m\x1b[30m\x1b[1m Because of ${err.message} \x1b[0m`)
-      console.log('\x1b[44m\x1b[30m\x1b[1m 🐬 🐬 We arrived in All Blue! \x1b[0m')
+      if (err) return console.log(`【${process.env.NODE_ENV}】\x1b[41m\x1b[30m\x1b[1m ⛈️ ⛈️ GoingMerry failed to set sail! \x1b[0m \x1b[41m\x1b[30m\x1b[1m Because of ${err.message} \x1b[0m`)
+      console.log(`【${process.env.NODE_ENV}】\x1b[44m\x1b[30m\x1b[1m 🐬 🐬 We arrived in All Blue! \x1b[0m`)
     })
   }
 
@@ -26,8 +26,8 @@ export const useDatabase = () => {
 
   const disconnectDatabase = async () => {
     connection.end((err: Error | null) => {
-      if (err) return console.log(`\x1b[41m\x1b[30m\x1b[1m ⛈️ ⛈️ GoingMerry failed to leave! \x1b[0m \x1b[41m\x1b[30m\x1b[1m Because of ${err.message} \x1b[0m`)
-      console.log('\x1b[43m\x1b[30m\x1b[1m 🐬 🐬 It is time to say goodbye to All Blue! \x1b[0m')
+      if (err) return console.log(`【${process.env.NODE_ENV}】\x1b[41m\x1b[30m\x1b[1m ⛈️ ⛈️ GoingMerry failed to leave! \x1b[0m \x1b[41m\x1b[30m\x1b[1m Because of ${err.message} \x1b[0m`)
+      console.log(`【${process.env.NODE_ENV}】\x1b[43m\x1b[30m\x1b[1m 🐬 🐬 It is time to say goodbye to All Blue! \x1b[0m`)
     })
   }
 
