@@ -1,7 +1,7 @@
 import { useTest, useErrorReturn, querySelect } from '@/utils'
 
 describe('create project', () => {
-  const testFn = useTest('/upload/image', 'post')
+  const testFn = useTest('/file/image', 'post')
 
   test('not login', async () => {
     const { body, status } = await testFn(undefined)
