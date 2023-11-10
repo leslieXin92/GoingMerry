@@ -16,18 +16,15 @@ describe('create project', () => {
   })
 
   test('no image', async () => {
-    // const { body, status } = await testFn(undefined, { id: 1, username: 'leslie' })
-    // expect(status).toBe(400)
-    // expect(body).toEqual(useErrorReturn('Image Cannot Be Empty!'))
+    const { body, status } = await testFn(undefined, { id: 1, username: 'leslie' })
+    expect(status).toBe(400)
+    expect(body).toEqual(useErrorReturn('Image Is Incorrectly Formatted Or Cannot Be Empty!'))
   })
 
   test('not image', async () => {
-    // const fromData = new FormData()
-    // const blob = new Blob()
-    // fromData.append('image', blob, 'image.jpg')
-    // const { body, status } = await testFn(fromData, { id: 1, username: 'leslie' })
-    // expect(status).toBe(400)
-    // expect(body).toEqual(useErrorReturn('Image Format Error!'))
+    const { body, status } = await testFn(undefined, { id: 1, username: 'leslie' })
+    expect(status).toBe(400)
+    expect(body).toEqual(useErrorReturn('Image Is Incorrectly Formatted Or Cannot Be Empty!'))
   })
 
   test('save success', async () => {
