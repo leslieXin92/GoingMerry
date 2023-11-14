@@ -6,7 +6,7 @@ on:
     branches:
       - main
     types:
-      - merged
+      - closed
 
 jobs:
   test:
@@ -21,9 +21,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Setup Environment Variables and Run Tests
         run: |
@@ -33,4 +34,4 @@ jobs:
           export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
           export MYSQL_USER=${{ secrets.MYSQL_USER }}
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          npm test
+          yarn test
