@@ -26,12 +26,27 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Setup Environment Variables and Run Tests
+      - name: Run Tests
         run: |
           export NODE_ENV=test
-          export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
-          export MYSQL_PORT=${{ secrets.MYSQL_PORT }}
-          export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
-          export MYSQL_USER=${{ secrets.MYSQL_USER }}
-          export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          export MYSQL_HOST=${{ secrets.TEST_MYSQL_HOST }}
+          export MYSQL_PORT=${{ secrets.TEST_MYSQL_PORT }}
+          export MYSQL_DATABASE=${{ secrets.TEST_MYSQL_DATABASE }}
+          export MYSQL_USER=${{ secrets.TEST_MYSQL_USER }}
+          export MYSQL_PASSWORD=${{ secrets.TEST_MYSQL_PASSWORD }}
           yarn test
+
+      - name: server
+        uses: easingthemes/ssh-deploy@v4
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.FTP_PRIVATE_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "/"
+          REMOTE_HOST: ${{ secrets.FTP_HOST }}
+          REMOTE_USER: ${{ secrets.FTP_USER }}
+          TARGET: ${{ secrets.FTP_TARGET }}
+          run: |
+            cd ${{ secrets.FTP_TARGET }}
+            pm2 stop GoingMerry
+            yarn
+            pm2 restart GoingMerry
