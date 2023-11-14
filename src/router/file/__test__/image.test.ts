@@ -28,17 +28,5 @@ describe('create project', () => {
   })
 
   test('save success', async () => {
-    // const { body, status } = await testFn(undefined, { id: 1, username: 'leslie' })
-    // expect(status).toBe(200)
-    // const images = await querySelect({
-    //   table: 'files',
-    //   columns: ['id']
-    // })
-    // expect(body).toEqual({
-    //   code: 0,
-    //   data: { imageUrl: expect.any(String) },
-    //   msg: 'Save Success!'
-    // })
-    // expect(images.length).toBe(1)
   })
 })
