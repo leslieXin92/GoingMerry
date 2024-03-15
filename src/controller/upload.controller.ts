@@ -8,6 +8,6 @@ import type { File } from 'koa-multer'
 export const handleSaveImageInfo = async (ctx: Context) => {
   const { filename, mimetype, size } = (ctx.req as IncomingMessage & { file: File }).file
   const imageUrl = `https://${APP_HOST}/api/images/${filename}`
-  await savaPictureInfo(filename, mimetype, size)
+  await savaPictureInfo({ filename, mimetype, size }, ctx.user)
   ctx.body = useSuccessReturn({ imageUrl }, 'Save Success!')
 }
