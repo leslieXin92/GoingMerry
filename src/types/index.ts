@@ -1,5 +1,2 @@
-export * from './error.type'
 export * from './user.type'
 export * from './blog.type'
-export * from './project.type'
-export * from './task.type'

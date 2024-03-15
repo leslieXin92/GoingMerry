@@ -18,7 +18,7 @@ export const useDatabase = () => {
   }
 
   const clearDatabase = async () => {
-    const tables = ['users', 'blogs']
+    const tables = ['users']
     await Promise.all(tables.map(async table => {
       await connection.promise().execute(`DELETE FROM ${table}`)
     }))

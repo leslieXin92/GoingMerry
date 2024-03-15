@@ -1,5 +1,3 @@
 export * from './user.controller'
 export * from './blog.controller'
-export * from './project.controller'
-export * from './task.controller'
 export * from './upload.controller'

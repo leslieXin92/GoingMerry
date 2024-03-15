@@ -19,7 +19,7 @@ describe('register', () => {
     }
     const { status, body } = await testFn(params)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Username Or Password Cannot Be Empty!'))
+    expect(body).toEqual(useErrorReturn('Username Cannot Be Empty!'))
   })
 
   test('no password', async () => {
@@ -30,7 +30,7 @@ describe('register', () => {
     }
     const { status, body } = await testFn(params)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Username Or Password Cannot Be Empty!'))
+    expect(body).toEqual(useErrorReturn('Password Cannot Be Empty!'))
   })
 
   test('no confirmPassword', async () => {
@@ -41,7 +41,7 @@ describe('register', () => {
     }
     const { status, body } = await testFn(params)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Username Or Password Cannot Be Empty!'))
+    expect(body).toEqual(useErrorReturn('ConfirmPassword Cannot Be Empty!'))
   })
 
   test('passwords are different', async () => {
@@ -73,23 +73,48 @@ describe('register', () => {
     expect(body).toEqual(useErrorReturn('User Has Already Exists!'))
   })
 
-  test('register successfully', async () => {
-    const params = {
-      username: 'leslie',
-      password: 'leslie',
-      confirmPassword: 'leslie'
-    }
-    const { status, body } = await testFn(params)
-    const users = await querySelect({
-      table: 'users',
-      where: { username: 'leslie' },
-      columns: ['username', 'password']
+  describe('register successfully', () => {
+    test('normal', async () => {
+      const params = {
+        username: 'leslie',
+        password: 'leslie',
+        confirmPassword: 'leslie'
+      }
+      const { status, body } = await testFn(params)
+      const users = await querySelect({
+        table: 'users',
+        where: { username: 'leslie' },
+        columns: ['username', 'password', 'permission']
+      })
+      expect(status).toBe(200)
+      expect(body).toEqual(useSuccessReturn(null, 'Register Success!'))
+      expect(users).toEqual([{
+        username: 'leslie',
+        password: encrypt('leslie'),
+        permission: 'normal'
+      }])
     })
-    expect(status).toBe(200)
-    expect(body).toEqual(useSuccessReturn(null, 'Register Success!'))
-    expect(users).toEqual([{
-      username: 'leslie',
-      password: encrypt('leslie')
-    }])
+
+    test('admin', async () => {
+      const params = {
+        username: 'leslie',
+        password: 'leslie',
+        confirmPassword: 'leslie',
+        permission: 'admin'
+      } as const
+      const { status, body } = await testFn(params)
+      const users = await querySelect({
+        table: 'users',
+        where: { username: 'leslie' },
+        columns: ['username', 'password', 'permission']
+      })
+      expect(status).toBe(200)
+      expect(body).toEqual(useSuccessReturn(null, 'Register Success!'))
+      expect(users).toEqual([{
+        username: 'leslie',
+        password: encrypt('leslie'),
+        permission: 'admin'
+      }])
+    })
   })
 })

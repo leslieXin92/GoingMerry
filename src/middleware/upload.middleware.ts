@@ -5,7 +5,9 @@ import type { IncomingMessage } from 'http'
 import type { Context, Next } from 'koa'
 import type { File } from 'koa-multer'
 
-// Inject image's multer to ctx
+/**
+ * Inject image's multer to ctx
+ */
 export const injectImageMulter = () => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, IMAGE_PATH),
@@ -25,7 +27,9 @@ export const injectImageMulter = () => {
   return imagesUpload.single('image')
 }
 
-// verify image file type
+/**
+ * verify image file type
+ */
 export const verifyImageType = async (ctx: Context, next: Next) => {
   const { file } = ctx.req as IncomingMessage & { file: File }
   if (!file) return throwError(ctx, 'Image Is Incorrectly Formatted Or Cannot Be Empty!', 400)

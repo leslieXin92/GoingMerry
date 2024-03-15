@@ -18,19 +18,19 @@ export const getBlogItem = async (id: string) => {
 }
 
 export const createBlog = async (params: CreateBlogParams) => {
-  const { title, content, type } = params
+  const { title, content, visibility } = params
   await queryInsert({
     table: 'blogs',
-    data: { title, content, type }
+    data: { title, content, visibility }
   })
 }
 
 export const updateBlog = async (params: UpdateBlogItemParams & { id: string }) => {
-  const { id, title, content, type } = params
+  const { id, title, content, visibility } = params
   await queryUpdate({
     table: 'blogs',
     where: { id },
-    update: { title, content, type }
+    update: { title, content, visibility }
   })
 }
 

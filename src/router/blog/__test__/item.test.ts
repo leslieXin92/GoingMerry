@@ -23,7 +23,7 @@ describe('get blog item', () => {
         id: 1,
         title: 'test',
         content: 'test',
-        type: 'public'
+        visibility: 'public'
       }
     })
     const { status, body } = await testNotLoginPublic()
@@ -32,7 +32,7 @@ describe('get blog item', () => {
       id: 1,
       title: 'test',
       content: 'test',
-      type: 'public',
+      visibility: 'public',
       createdAt: expect.any(String)
     }))
   })
@@ -45,7 +45,7 @@ describe('get blog item', () => {
         id: 1,
         title: 'test',
         content: 'test',
-        type: 'private'
+        visibility: 'private'
       }
     })
     const { status, body } = await testNotLoginPrivate()
@@ -61,16 +61,16 @@ describe('get blog item', () => {
         id: 1,
         title: 'test',
         content: 'test',
-        type: 'public'
+        visibility: 'public'
       }
     })
-    const { status, body } = await testWriteListPublic(undefined, { id: 1, username: 'leslie' })
+    const { status, body } = await testWriteListPublic(undefined, { id: '1', username: 'leslie' })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn({
       id: 1,
       title: 'test',
       content: 'test',
-      type: 'public',
+      visibility: 'public',
       createdAt: expect.any(String)
     }))
   })
@@ -83,16 +83,16 @@ describe('get blog item', () => {
         id: 1,
         title: 'test',
         content: 'test',
-        type: 'private'
+        visibility: 'private'
       }
     })
-    const { status, body } = await testWriteListPrivate(undefined, { id: 1, username: 'leslie' })
+    const { status, body } = await testWriteListPrivate(undefined, { id: '1', username: 'leslie' })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn({
       id: 1,
       title: 'test',
       content: 'test',
-      type: 'private',
+      visibility: 'private',
       createdAt: expect.any(String)
     }))
   })
@@ -105,16 +105,16 @@ describe('get blog item', () => {
         id: 1,
         title: 'test',
         content: 'test',
-        type: 'public'
+        visibility: 'public'
       }
     })
-    const { status, body } = await testNotWriteListPublic(undefined, { id: 1, username: 'yahoo' })
+    const { status, body } = await testNotWriteListPublic(undefined, { id: '1', username: 'yahoo' })
     expect(status).toBe(200)
     expect(body).toEqual(useSuccessReturn({
       id: 1,
       title: 'test',
       content: 'test',
-      type: 'public',
+      visibility: 'public',
       createdAt: expect.any(String)
     }))
   })
@@ -127,10 +127,10 @@ describe('get blog item', () => {
         id: 1,
         title: 'test',
         content: 'test',
-        type: 'private'
+        visibility: 'private'
       }
     })
-    const { status, body } = await testNotWriteListPrivate(undefined, { id: 1, username: 'yahoo' })
+    const { status, body } = await testNotWriteListPrivate(undefined, { id: '1', username: 'yahoo' })
     expect(status).toBe(401)
     expect(body).toEqual(useErrorReturn('Unauthorized!'))
   })
