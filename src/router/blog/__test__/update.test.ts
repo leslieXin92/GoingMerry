@@ -1,6 +1,6 @@
 import { useTest, useErrorReturn, useSuccessReturn, queryInsert, querySelect } from '@/utils'
 import type { UpdateBlogItemParams } from '@/types'
-import { BlogType } from '@/types'
+import { VisibilityType } from '@/types'
 
 describe('update blog', () => {
   const testNotLogin = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
@@ -15,9 +15,9 @@ describe('update blog', () => {
     const params: UpdateBlogItemParams = {
       title: 'test',
       content: 'test',
-      type: 'public'
+      visibility: 'public'
     }
-    const { status, body } = await testNotWriteList(params, { id: 1, username: 'yahoo' })
+    const { status, body } = await testNotWriteList(params, { id: '1', username: 'yahoo' })
     expect(status).toBe(401)
     expect(body).toEqual(useErrorReturn('Unauthorized!'))
   })
@@ -27,9 +27,9 @@ describe('update blog', () => {
     const params: UpdateBlogItemParams = {
       title: '',
       content: 'test',
-      type: 'public'
+      visibility: 'public'
     }
-    const { status, body } = await testNoTitle(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testNoTitle(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
@@ -39,9 +39,9 @@ describe('update blog', () => {
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: '',
-      type: 'public'
+      visibility: 'public'
     }
-    const { status, body } = await testNoContent(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testNoContent(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
@@ -51,9 +51,9 @@ describe('update blog', () => {
     const params = {
       title: 'title',
       content: 'content',
-      type: '' as BlogType
+      visibility: '' as VisibilityType
     }
-    const { status, body } = await testNoType(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testNoType(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Title, Content And Type Cannot Be Empty!'))
   })
@@ -63,9 +63,9 @@ describe('update blog', () => {
     const params = {
       title: 'title',
       content: 'content',
-      type: 'otherType' as BlogType
+      visibility: 'otherType' as VisibilityType
     }
-    const { status, body } = await testInvalidType(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testInvalidType(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Type Is Invalid!'))
   })
@@ -75,9 +75,9 @@ describe('update blog', () => {
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
-      type: 'public'
+      visibility: 'public'
     }
-    const { status, body } = await testInvalidId(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testInvalidId(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
   })
@@ -87,9 +87,9 @@ describe('update blog', () => {
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
-      type: 'public'
+      visibility: 'public'
     }
-    const { status, body } = await testNotExists(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testNotExists(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
   })
@@ -102,15 +102,15 @@ describe('update blog', () => {
         id: 1,
         title: 'title',
         content: 'content',
-        type: 'public'
+        visibility: 'public'
       }
     })
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
-      type: 'public'
+      visibility: 'public'
     }
-    const { status, body } = await testNoChange(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testNoChange(params, { id: '1', username: 'leslie' })
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('No Change!'))
   })
@@ -124,15 +124,15 @@ describe('update blog', () => {
         id: 1,
         title: 'title',
         content: 'content',
-        type: 'public'
+        visibility: 'public'
       }
     })
     const params: UpdateBlogItemParams = {
       title: 'title',
       content: 'content',
-      type: 'private'
+      visibility: 'private'
     }
-    const { status, body } = await testUpdateSuccess(params, { id: 1, username: 'leslie' })
+    const { status, body } = await testUpdateSuccess(params, { id: '1', username: 'leslie' })
     const blogs = await querySelect({
       table: 'blogs',
       where: { id: 1 },
@@ -144,7 +144,7 @@ describe('update blog', () => {
       id: 1,
       title: 'title',
       content: 'content',
-      type: 'private'
+      visibility: 'private'
     }])
   })
 })

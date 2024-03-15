@@ -7,7 +7,7 @@ export const savaPictureInfo = async (filename: string, mimetype: string, size: 
       filename,
       mimetype,
       size,
-      type: 'image'
+      fileType: 'image'
     }
   })
 }

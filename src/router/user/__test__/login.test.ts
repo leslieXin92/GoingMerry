@@ -5,28 +5,38 @@ describe('login', () => {
   const testFn = useTest<LoginParams>('/user/login', 'post')
 
   test('no username', async () => {
-    const password = 'leslie'
-    const { status, body } = await testFn({ password })
+    const params = {
+      password: 'leslie'
+    }
+    const { status, body } = await testFn(params)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Username Or Password Cannot Be Empty!'))
+    expect(body).toEqual(useErrorReturn('Username Cannot Be Empty!'))
   })
 
   test('no password', async () => {
-    const username = 'leslie'
-    const { status, body } = await testFn({ username })
+    const params = {
+      username: 'leslie'
+    }
+    const { status, body } = await testFn(params)
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Username Or Password Cannot Be Empty!'))
+    expect(body).toEqual(useErrorReturn('Password Cannot Be Empty!'))
   })
 
   test('user does not exist', async () => {
-    const username = 'cabbage'
-    const password = 'cabbage'
-    const { status, body } = await testFn({ username, password })
+    const params = {
+      username: 'leslie',
+      password: 'leslie'
+    }
+    const { status, body } = await testFn(params)
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('User Does Not Exists!'))
   })
 
   test('password is incorrect', async () => {
+    const params = {
+      username: 'leslie',
+      password: 'cabbage'
+    }
     await queryInsert({
       table: 'users',
       data: {
@@ -34,32 +44,60 @@ describe('login', () => {
         password: encrypt('leslie')
       }
     })
-    const username = 'leslie'
-    const password = 'cabbage'
-    const { status, body } = await testFn({ username, password })
+    const { status, body } = await testFn(params)
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Password Is Incorrect!'))
   })
 
-  test('login successfully', async () => {
-    await queryInsert({
-      table: 'users',
-      data: {
+  describe('login successfully', () => {
+    test('normal', async () => {
+      const params = {
         username: 'leslie',
-        password: encrypt('leslie')
+        password: 'leslie'
       }
+      await queryInsert({
+        table: 'users',
+        data: {
+          username: 'leslie',
+          password: encrypt('leslie')
+        }
+      })
+      const { status, body } = await testFn(params)
+      expect(status).toBe(200)
+      expect(body).toEqual(useSuccessReturn(
+        {
+          id: expect.any(Number),
+          username: 'leslie',
+          token: expect.any(String),
+          permission: 'normal'
+        },
+        'Login Success!'
+      ))
     })
-    const username = 'leslie'
-    const password = 'leslie'
-    const { status, body } = await testFn({ username, password })
-    expect(status).toBe(200)
-    expect(body).toEqual(useSuccessReturn(
-      {
-        id: expect.any(Number),
-        username,
-        token: expect.any(String)
-      },
-      'Login Success!'
-    ))
+
+    test('admin', async () => {
+      const username = 'leslie'
+      const password = 'leslie'
+      const permission = 'admin'
+      await queryInsert({
+        table: 'users',
+        data: {
+          username,
+          password: encrypt(password),
+          permission
+        }
+      })
+      const { status, body } = await testFn({ username, password })
+      expect(status).toBe(200)
+      expect(body).toEqual(useSuccessReturn(
+        {
+          id: expect.any(Number),
+          username,
+          token: expect.any(String),
+          permission
+        },
+        'Login Success!'
+      ))
+    })
   })
 })

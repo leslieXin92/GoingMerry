@@ -4,13 +4,13 @@ import type { Context } from 'koa'
 import type { GetBlogListParams, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 
 export const handleGetBlogList = async (ctx: Context) => {
-  const { type, page } = ctx.query as unknown as GetBlogListParams
+  const { visibility, page } = ctx.query as unknown as GetBlogListParams
   const { user } = ctx
-  if (type !== 'public' && (!user || !verifyWriteList(user.username))) return throwError(ctx, 'Unauthorized!', 401)
+  if (visibility !== 'public' && (!user || !verifyWriteList(user.username))) return throwError(ctx, 'Unauthorized!', 401)
   const totalBlogList = await getBlogList()
-  const totalCount = totalBlogList.filter(blogItem => type ? blogItem.type === type : true).length
+  const totalCount = totalBlogList.filter(blogItem => visibility ? blogItem.visibility === visibility : true).length
   const blogList = totalBlogList
-    .filter(blogItem => type ? blogItem.type === type : true)
+    .filter(blogItem => visibility ? blogItem.visibility === visibility : true)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice((parseInt(page) - 1) * 10, parseInt(page) * 10)
   ctx.body = useSuccessReturn({ blogList, totalCount })
@@ -21,7 +21,7 @@ export const handleGetBlogItem = async (ctx: Context) => {
   const { user } = ctx
   const blogItem = await getBlogItem(id)
   if (!blogItem) return throwError(ctx, 'Blog Dose Not Exists!', 400)
-  if (blogItem.type === 'private' && (!user || !verifyWriteList(user.username))) return throwError(ctx, 'Unauthorized!', 401)
+  if (blogItem.visibility === 'private' && (!user || !verifyWriteList(user.username))) return throwError(ctx, 'Unauthorized!', 401)
   ctx.body = useSuccessReturn(blogItem)
 }
 

@@ -1,7 +1,10 @@
+export type UserPermissionType = 'normal' | 'admin' | 'superAdmin'
+
 export interface UserInfo {
-  id: number
+  id: string
   username: string
   password: string
+  permission: UserPermissionType
 }
 
 export interface LoginParams {
@@ -9,14 +12,9 @@ export interface LoginParams {
   password: string
 }
 
-export interface LoginResult {
-  id: number
-  username: string
-  token: string
-}
-
 export interface RegisterParams {
   username: string
   password: string
   confirmPassword: string
+  permission?: UserPermissionType
 }

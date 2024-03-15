@@ -1,4 +1,5 @@
 import { useDatabase } from '@/app/database'
+import { UserInfo } from '@/types'
 
 type Table = 'users' | 'blogs' | 'projects' | 'tasks' | 'files'
 
@@ -41,7 +42,7 @@ export const querySelect = async <T = unknown>(query: SelectQuery) => {
   return res[0] as unknown as Promise<T>
 }
 
-export const queryInsert = async (query: InsertQuery) => {
+export const queryInsert = async (query: InsertQuery) => { // TODO - 消费queryInsert时可以对query中的data进行类型断言
   const { connectDatabase, disconnectDatabase, execute } = useDatabase()
   await connectDatabase()
   const { table, data } = query

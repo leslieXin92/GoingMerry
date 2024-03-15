@@ -1,4 +1,6 @@
-// compare two object's values by their same keys
+/**
+ * Compare the values fo two objects by their same keys
+ */
 export const isEqual = (before: Record<string, any>, after: Record<string, any>) => {
   const beforeKeys = Object.keys(before)
   const afterKeys = Object.keys(after)

@@ -6,16 +6,16 @@ import type { Context } from 'koa'
 import type { UserInfo, RegisterParams } from '@/types'
 
 export const handleLogin = async (ctx: Context) => {
-  const { id, username } = ctx.user as UserInfo
-  const token = sign({ id, username }, PRIVATE_KEY, {
+  const { id, username, permission } = ctx.user as UserInfo
+  const token = sign({ id, username, permission }, PRIVATE_KEY, {
     expiresIn: 60 * 60 * 24,
     algorithm: 'RS384'
   })
-  ctx.body = useSuccessReturn({ id, username, token }, 'Login Success!')
+  ctx.body = useSuccessReturn({ id, username, permission, token }, 'Login Success!')
 }
 
 export const handleRegister = async (ctx: Context) => {
-  const { username, password } = ctx.request.body as RegisterParams
-  await createUser(username, password)
+  const { username, password, permission = 'normal' } = ctx.request.body as RegisterParams
+  await createUser(username, password, permission)
   ctx.body = useSuccessReturn(null, 'Register Success!')
 }

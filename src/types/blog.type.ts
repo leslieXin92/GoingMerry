@@ -1,8 +1,8 @@
-export type BlogType = 'public' | 'private'
+export type VisibilityType = 'public' | 'private'
 
 export interface BlogItem {
-  id: number
-  type: BlogType
+  id: string
+  visibility: VisibilityType
   title: string
   content: string
   createdAt: string
@@ -10,17 +10,17 @@ export interface BlogItem {
 
 export interface GetBlogListParams {
   page: string
-  type: BlogType
+  visibility: VisibilityType
 }
 
 export interface CreateBlogParams {
   title: string
   content: string
-  type: BlogType
+  visibility: VisibilityType
 }
 
 export interface UpdateBlogItemParams {
   title: string
   content: string
-  type: BlogType
+  visibility: VisibilityType
 }
