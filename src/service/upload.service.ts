@@ -1,13 +1,19 @@
 import { queryInsert } from '@/utils'
+import type { UserInfo } from '@/types'
 
-export const savaPictureInfo = async (filename: string, mimetype: string, size: number) => {
+interface FileData {
+  filename: string
+  mimetype: string
+  size: number
+}
+
+export const savaPictureInfo = async (fileData: FileData, user: UserInfo) => {
   await queryInsert({
     table: 'files',
     data: {
-      filename,
-      mimetype,
-      size,
-      fileType: 'image'
+      ...fileData,
+      fileType: 'image',
+      createdBy: user.id
     }
   })
 }
