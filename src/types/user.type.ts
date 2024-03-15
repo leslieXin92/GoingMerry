@@ -1,7 +1,7 @@
 export type UserPermissionType = 'normal' | 'admin' | 'superAdmin'
 
 export interface UserInfo {
-  id: string
+  id: number
   username: string
   password: string
   permission: UserPermissionType
