@@ -23,20 +23,14 @@ describe('login', () => {
   })
 
   test('user does not exist', async () => {
-    const params = {
-      username: 'leslie',
-      password: 'leslie'
-    }
+    const params = { username: 'leslie', password: 'leslie' }
     const { status, body } = await testFn(params)
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('User Does Not Exists!'))
   })
 
   test('password is incorrect', async () => {
-    const params = {
-      username: 'leslie',
-      password: 'cabbage'
-    }
+    const params = { username: 'leslie', password: 'cabbage' }
     await queryInsert({
       table: 'users',
       data: {
@@ -51,10 +45,7 @@ describe('login', () => {
 
   describe('login successfully', () => {
     test('normal', async () => {
-      const params = {
-        username: 'leslie',
-        password: 'leslie'
-      }
+      const params = { username: 'leslie', password: 'leslie' }
       await queryInsert({
         table: 'users',
         data: {

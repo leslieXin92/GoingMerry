@@ -67,11 +67,12 @@ export const verifyAuth = async (ctx: Context, next: Next) => {
   try {
     const token = authorization.replace('Bearer ', '')
     const user = jwtVerify(token, PUBLIC_KEY, { algorithms: ['RS384'] }) as JwtPayload
-    if (!['admin', 'superAdmin'].includes(user.permission)) return throwError(ctx, 'Unauthorized!', 401)
+    if (!user) return throwError(ctx, 'Unauthorized!', 401)
+    ctx.user = user
+    await next()
   } catch (err) {
     return throwError(ctx, 'Unauthorized!', 401)
   }
-  await next()
 }
 
 /**
@@ -84,8 +85,9 @@ export const verifySuperAuth = async (ctx: Context, next: Next) => {
     const token = authorization.replace('Bearer ', '')
     const user = jwtVerify(token, PUBLIC_KEY, { algorithms: ['RS384'] }) as JwtPayload
     if (user.permission !== 'superAdmin') return throwError(ctx, 'Unauthorized!', 401)
+    ctx.user = user
+    await next()
   } catch (err) {
     return throwError(ctx, 'Unauthorized!', 401)
   }
-  await next()
 }
