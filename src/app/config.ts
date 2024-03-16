@@ -21,7 +21,10 @@ export const MYSQL_DATABASE = process.env.MYSQL_DATABASE
 export const MYSQL_USER = process.env.MYSQL_USER
 export const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
 
+export const FILE_PATH = process.env.FILE_PATH
+
 export const PRIVATE_KEY = fs.readFileSync(path.resolve(__dirname, './keys/private.key'))
 export const PUBLIC_KEY = fs.readFileSync(path.resolve(__dirname, './keys/public.key'))
 
 export const IMAGE_PATH = './public/images'
+
