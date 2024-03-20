@@ -23,41 +23,22 @@ const handleAuth = async (req: Test, userInfo: Omit<UserInfo, 'password'>) => {
   req.set('Authorization', token)
 }
 
-export const useTest = <Params = unknown>(url: string, method: Method, params?: Params) => {
-  switch (method) {
-    case 'get' || 'GET':
-      return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {
-        const req = request(app.callback()).get(url).query(data ?? params ?? {})
-        if (userInfo) await handleAuth(req, userInfo)
-        return req
-      }
+export const useTest = <Params = unknown>(url: string, method: Method) => {
+  return async (data: Partial<Params> = {}, userInfo?: Omit<UserInfo, 'password'>) => {
+    const req = request(app.callback())[method](url)
 
-    case 'post' || 'POST':
-      return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {
-        const req = request(app.callback()).post(url).send(data ?? params ?? {})
-        if (userInfo) await handleAuth(req, userInfo)
-        return req
-      }
+    switch (method.toLowerCase()) {
+      case 'get':
+        req.query(data)
+        break
+      case 'post':
+      case 'patch':
+      case 'delete':
+        req.send(data)
+        break
+    }
 
-    case 'patch' || 'PATCH':
-      return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {
-        const req = request(app.callback()).patch(url).send(data ?? params ?? {})
-        if (userInfo) await handleAuth(req, userInfo)
-        return req
-      }
-
-    case 'delete' || 'DELETE':
-      return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {
-        const req = request(app.callback()).delete(url).send(data ?? params ?? {})
-        if (userInfo) await handleAuth(req, userInfo)
-        return req
-      }
-
-    default:
-      return async (data: Partial<Params> = params ?? {}, userInfo?: Omit<UserInfo, 'password'>) => {
-        const req = request(app.callback()).get(url).query(data ?? params ?? {})
-        if (userInfo) await handleAuth(req, userInfo)
-        return req
-      }
+    if (userInfo) await handleAuth(req, userInfo)
+    return req
   }
 }
