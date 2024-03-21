@@ -22,5 +22,13 @@ export interface CreateProjectParams {
   status?: ProjectStatus
   startAt?: string
   doneAt?: string
-  doneBy?: number
+}
+
+export interface UpdateProjectItemParams {
+  name: string
+  technologyStack?: string[]
+  description?: string
+  status?: ProjectStatus
+  startAt?: string
+  doneAt?: string
 }

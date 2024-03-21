@@ -20,7 +20,7 @@ describe('update blog', () => {
         content: 'test',
         visibility: 'public'
       }
-      const { status, body } = await testFn(params, { id: 1, username: 'yahoo', permission: 'normal' })
+      const { status, body } = await testFn(params, { id: 1, username: 'leslie', permission: 'normal' })
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
@@ -33,7 +33,7 @@ describe('update blog', () => {
         content: 'test',
         visibility: 'public'
       }
-      const { status, body } = await testFn(params, { id: 1, username: 'yahoo', permission: 'normal' })
+      const { status, body } = await testFn(params, { id: 1, username: 'leslie', permission: 'normal' })
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })

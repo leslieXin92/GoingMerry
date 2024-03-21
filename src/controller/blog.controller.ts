@@ -2,7 +2,6 @@ import { getBlogList, getBlogItem, createBlog, updateBlog, deleteBlog } from '@/
 import { useSuccessReturn, throwError, isEqual } from '@/utils'
 import type { Context } from 'koa'
 import type { GetBlogListParams, CreateBlogParams, UpdateBlogItemParams } from '@/types'
-import user from '@/router/user'
 
 export const handleGetBlogList = async (ctx: Context) => {
   const { visibility, page } = ctx.query as unknown as GetBlogListParams

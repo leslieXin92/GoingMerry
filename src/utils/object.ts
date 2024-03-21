@@ -7,7 +7,7 @@ export const isEqual = (before: Record<string, any>, after: Record<string, any>)
   const beforeKeys = Object.keys(before)
   const afterKeys = Object.keys(after)
   const sameKeys = beforeKeys.filter(key => afterKeys.includes(key))
-  return sameKeys.every(key => before[key] === after[key])
+  return sameKeys.every(key => JSON.stringify(before[key]) === JSON.stringify(after[key]))
 }
 
 /**

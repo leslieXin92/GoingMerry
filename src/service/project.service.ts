@@ -1,5 +1,5 @@
-import { queryInsert, querySelect } from '@/utils'
-import { CreateProjectParams, ProjectItem, UserInfo } from '@/types'
+import { queryInsert, querySelect, queryUpdate } from '@/utils'
+import { CreateProjectParams, ProjectItem, UpdateProjectItemParams, UserInfo } from '@/types'
 
 export const getProjectList = async () => {
   return await querySelect<ProjectItem[]>({
@@ -35,5 +35,43 @@ export const createProject = async (params: CreateProjectParams, user: Omit<User
       createdBy: user.id,
       updatedBy: user.id
     }
+  })
+}
+
+export const updateProject = async (
+  params: UpdateProjectItemParams & { id: number },
+  user: Omit<UserInfo, 'password'>
+) => {
+  const { id, name, technologyStack, description, status, startAt, doneAt } = params
+
+  let update: Record<string, any> = {
+    name,
+    technologyStack,
+    description,
+    status,
+    updatedBy: user.id
+  }
+
+  switch (status) {
+    case 'pending':
+      update.startAt = null
+      update.doneAt = null
+      break
+
+    case 'doing':
+      update.startAt = startAt ?? new Date()
+      update.doneAt = doneAt
+      break
+
+    case 'done':
+      update.startAt = startAt ?? new Date()
+      update.doneAt = doneAt ?? new Date()
+      break
+  }
+
+  return await queryUpdate({
+    table: 'projects',
+    where: { id },
+    update
   })
 }
