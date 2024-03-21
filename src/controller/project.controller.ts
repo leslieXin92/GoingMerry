@@ -19,12 +19,6 @@ export const handleGetProjectItem = async (ctx: Context) => {
 }
 
 export const handleCreateProject = async (ctx: Context) => {
-  try {
-    await createProject(ctx.request.body as CreateProjectParams, ctx.user)
-    ctx.body = useSuccessReturn(null, 'Create success!')
-  } catch (e: any) {
-    const message = e.message
-    ctx.body = useSuccessReturn(null, message)
-    console.log(e.message)
-  }
+  await createProject(ctx.request.body as CreateProjectParams, ctx.user)
+  ctx.body = useSuccessReturn(null, 'Create success!')
 }
