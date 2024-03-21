@@ -10,6 +10,6 @@ export const handleGetProjectList = async (ctx: Context) => {
 export const handleGetProjectItem = async (ctx: Context) => {
   const { id } = ctx.params
   const projectItem = await getProjectItem(id)
-  if (!projectItem) return throwError(ctx, 'Blog Dose Not Exists!', 400)
+  if (!projectItem) return throwError(ctx, 'Project Dose Not Exists!', 400)
   ctx.body = useSuccessReturn(projectItem)
 }

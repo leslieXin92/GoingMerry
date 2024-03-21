@@ -13,7 +13,7 @@ describe('get project item', () => {
   it('Project is not exists', async () => {
     const { status, body } = await testFn()
     expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
+    expect(body).toEqual(useErrorReturn('Project Dose Not Exists!'))
   })
 
   it('get project item success', async () => {
