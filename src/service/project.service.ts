@@ -1,4 +1,4 @@
-import { queryInsert, querySelect, queryUpdate } from '@/utils'
+import { queryDelete, queryInsert, querySelect, queryUpdate } from '@/utils'
 import { CreateProjectParams, ProjectItem, UpdateProjectItemParams, UserInfo } from '@/types'
 
 export const getProjectList = async () => {
@@ -73,5 +73,12 @@ export const updateProject = async (
     table: 'projects',
     where: { id },
     update
+  })
+}
+
+export const deleteProject = async (id: number) => {
+  await queryDelete({
+    table: 'projects',
+    where: { id }
   })
 }

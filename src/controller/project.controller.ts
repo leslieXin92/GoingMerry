@@ -1,4 +1,4 @@
-import { getProjectList, getProjectItem, createProject, updateProject } from '@/service'
+import { getProjectList, getProjectItem, createProject, updateProject, deleteProject } from '@/service'
 import { dateFormat, isEqual, throwError, useSuccessReturn } from '@/utils'
 import type { Context } from 'koa'
 import type { CreateProjectParams, UpdateProjectItemParams } from '@/types'
@@ -35,4 +35,13 @@ export const handleUpdateProject = async (ctx: Context) => {
   if (isEqual(beforeProjectItem, afterProjectItem)) return throwError(ctx, 'No Change!', 400)
   await updateProject({ ...afterProjectItem, id }, ctx.user)
   ctx.body = useSuccessReturn(null, 'Update Success!')
+}
+
+export const handleDeleteProject = async (ctx: Context) => {
+  const { id } = ctx.params
+  if (isNaN(parseInt(id))) return throwError(ctx, 'Id Is Invalid!', 400)
+  const project = await getProjectItem(id)
+  if (!project) return throwError(ctx, 'Project Dose Not Exists!', 400)
+  await deleteProject(id)
+  ctx.body = useSuccessReturn(null, 'Delete Success!')
 }
