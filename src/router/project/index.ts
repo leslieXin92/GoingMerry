@@ -1,10 +1,11 @@
 import Router from 'koa-router'
-import { verifyGetProjectItemParams } from '@/middleware'
-import { handleGetProjectList, handleGetProjectItem } from '@/controller'
+import { verifyAuth, verifyGetProjectItemParams, verifyCreateProjectParams } from '@/middleware'
+import { handleGetProjectList, handleGetProjectItem, handleCreateProject } from '@/controller'
 
 const projectRouter = new Router({ prefix: '/project' })
 
 projectRouter.get('/', handleGetProjectList)
 projectRouter.get('/:id', verifyGetProjectItemParams, handleGetProjectItem)
+projectRouter.post('/', verifyAuth, verifyCreateProjectParams, handleCreateProject)
 
 export default projectRouter

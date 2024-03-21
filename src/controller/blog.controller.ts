@@ -1,5 +1,5 @@
 import { getBlogList, getBlogItem, createBlog, updateBlog, deleteBlog } from '@/service'
-import { useSuccessReturn, throwError, isEqual, verifyWriteList } from '@/utils'
+import { useSuccessReturn, throwError, isEqual } from '@/utils'
 import type { Context } from 'koa'
 import type { GetBlogListParams, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 import user from '@/router/user'

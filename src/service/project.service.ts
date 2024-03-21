@@ -1,5 +1,5 @@
-import { querySelect } from '@/utils'
-import { ProjectItem } from '@/types'
+import { queryInsert, querySelect } from '@/utils'
+import { CreateProjectParams, ProjectItem, UserInfo } from '@/types'
 
 export const getProjectList = async () => {
   return await querySelect<ProjectItem[]>({
@@ -15,4 +15,25 @@ export const getProjectItem = async (id: number) => {
     columns: ['id', 'name', 'technologyStack', 'description', 'startAt', 'status', 'createdAt']
   })
   return projectList.length ? projectList[0] : null
+}
+
+export const createProject = async (params: CreateProjectParams, user: Omit<UserInfo, 'password'>) => {
+  const { name, technologyStack, description, status = 'pending', startAt, doneAt } = params
+  const startBy = status !== 'pending' ? user.id : null
+  const doneBy = status === 'done' ? user.id : null
+  await queryInsert({
+    table: 'projects',
+    data: {
+      name,
+      technologyStack,
+      description,
+      status,
+      startAt,
+      startBy,
+      doneAt,
+      doneBy,
+      createdBy: user.id,
+      updatedBy: user.id
+    }
+  })
 }

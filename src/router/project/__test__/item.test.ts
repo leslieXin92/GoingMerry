@@ -26,7 +26,8 @@ describe('get project item', () => {
         description: 'description',
         status: 'doing',
         startAt: new Date('2024-03-20'),
-        createdBy: 1
+        createdBy: 1,
+        updatedBy: 1
       }
     })
     const { status, body } = await testFn()
@@ -38,7 +39,7 @@ describe('get project item', () => {
       description: 'description',
       status: 'doing',
       createdAt: expect.any(String),
-      startAt: expect.any(String)
+      startAt: '2024-03-20'
     }))
   })
 })

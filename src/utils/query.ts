@@ -1,7 +1,7 @@
 import { useDatabase } from '@/app/database'
 import { UserInfo } from '@/types'
 
-type Table = 'users' | 'blogs' | 'projects' | 'tasks' | 'files'
+type Table = 'users' | 'blogs' | 'projects' | 'files'
 
 interface SelectQuery {
   table: Table,

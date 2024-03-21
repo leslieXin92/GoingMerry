@@ -12,7 +12,8 @@ describe('get project list', () => {
         description: 'description',
         status: 'doing',
         startAt: new Date('2024-03-20'),
-        createdBy: 1
+        createdBy: 1,
+        updatedBy: 1
       }
     })
 

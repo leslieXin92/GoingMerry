@@ -32,7 +32,6 @@ export const createBlog = async (params: CreateBlogParams, user: Omit<UserInfo, 
 }
 
 export const updateBlog = async (params: UpdateBlogItemParams & { id: string }, user: Omit<UserInfo, 'password'>) => {
-  const a = user
   const { id, title, content, visibility } = params
   await queryUpdate({
     table: 'blogs',

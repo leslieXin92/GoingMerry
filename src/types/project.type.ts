@@ -5,10 +5,22 @@ export interface ProjectItem {
   name: string
   technologyStack: string[]
   description: string
-  startAt: string
   status: ProjectStatus
-  createdAt: string
-  createdBy: string
+  startAt: string
   doneAt: string
-  doneBy: string
+  doneBy: number
+  createdAt: string
+  createdBy: number
+  updatedAt: string
+  updateBy: number
+}
+
+export interface CreateProjectParams {
+  name: string
+  technologyStack?: string[]
+  description?: string
+  status?: ProjectStatus
+  startAt?: string
+  doneAt?: string
+  doneBy?: number
 }
