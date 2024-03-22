@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 18.x ]
+        node-version: [ 18.17.0 ]
     steps:
       - uses: actions/checkout@v4
 
@@ -21,10 +21,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: yarn install
+        run: npm install
 
       - name: Setup Environment Variables and Run Tests
         run: |
@@ -34,4 +34,4 @@ jobs:
           export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
           export MYSQL_USER=${{ secrets.MYSQL_USER }}
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          yarn test
+          npm test

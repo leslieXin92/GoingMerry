@@ -11,7 +11,7 @@ export const getUserInfo = async (username: string): Promise<UserInfo | null> =>
 }
 
 export const createUser = async (username: string, password: string, permission: UserPermissionType) => {
-  await queryInsert({
+  const a = await queryInsert({
     table: 'users',
     data: {
       username,
@@ -19,4 +19,5 @@ export const createUser = async (username: string, password: string, permission:
       permission
     }
   })
+  console.log(a)
 }

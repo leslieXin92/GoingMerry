@@ -1,11 +1,10 @@
 import { useTest, useErrorReturn, useSuccessReturn, queryInsert, querySelect } from '@/utils'
-import type { UpdateBlogItemParams } from '@/types'
-import { VisibilityType } from '@/types'
+import type { UpdateBlogItemParams, VisibilityType } from '@/types'
 
 describe('update blog', () => {
   const testFn = useTest<UpdateBlogItemParams>('/blog/1', 'patch')
 
-  describe('not login', () => {
+  describe('no permission', () => {
     test('not login', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(401)
@@ -14,26 +13,30 @@ describe('update blog', () => {
   })
 
   describe('normal permission', () => {
+    const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
+
     test('normal permission', async () => {
       const params: UpdateBlogItemParams = {
         title: 'test',
         content: 'test',
         visibility: 'public'
       }
-      const { status, body } = await testFn(params, { id: 1, username: 'yahoo', permission: 'normal' })
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
   })
 
   describe('admin permission', () => {
+    const userInfo = { id: 1, username: 'leslie', permission: 'admin' } as const
+
     test('admin permission', async () => {
       const params: UpdateBlogItemParams = {
         title: 'test',
         content: 'test',
         visibility: 'public'
       }
-      const { status, body } = await testFn(params, { id: 1, username: 'yahoo', permission: 'normal' })
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
@@ -41,7 +44,6 @@ describe('update blog', () => {
 
   describe('superAdmin permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'superAdmin' } as const
-
     const testInvalidId = useTest<UpdateBlogItemParams>('/blog/xxx', 'patch')
 
     test('invalid id', async () => {
