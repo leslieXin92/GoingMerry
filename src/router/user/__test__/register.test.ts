@@ -1,18 +1,11 @@
-import {
-  encrypt,
-  useTest,
-  queryInsert,
-  useErrorReturn,
-  useSuccessReturn,
-  querySelect
-} from '@/utils'
+import { encrypt, useTest, queryInsert, useErrorReturn, useSuccessReturn, querySelect } from '@/utils'
 import type { RegisterParams } from '@/types'
 
 describe('register', () => {
   const testFn = useTest<RegisterParams>('/user/register', 'post')
 
   test('no username', async () => {
-    const params = {
+    const params: RegisterParams = {
       username: '',
       password: 'leslie',
       confirmPassword: 'leslie'
@@ -23,7 +16,7 @@ describe('register', () => {
   })
 
   test('no password', async () => {
-    const params = {
+    const params: RegisterParams = {
       username: 'leslie',
       password: '',
       confirmPassword: ''
@@ -34,7 +27,7 @@ describe('register', () => {
   })
 
   test('no confirmPassword', async () => {
-    const params = {
+    const params: RegisterParams = {
       username: 'leslie',
       password: 'leslie',
       confirmPassword: ''
@@ -45,7 +38,7 @@ describe('register', () => {
   })
 
   test('passwords are different', async () => {
-    const params = {
+    const params: RegisterParams = {
       username: 'leslie',
       password: 'leslie',
       confirmPassword: 'cabbage'
@@ -63,7 +56,7 @@ describe('register', () => {
         password: 'leslie'
       }
     })
-    const params = {
+    const params: RegisterParams = {
       username: 'leslie',
       password: 'leslie',
       confirmPassword: 'leslie'
@@ -75,7 +68,7 @@ describe('register', () => {
 
   describe('register successfully', () => {
     test('normal', async () => {
-      const params = {
+      const params: RegisterParams = {
         username: 'leslie',
         password: 'leslie',
         confirmPassword: 'leslie'
@@ -96,12 +89,12 @@ describe('register', () => {
     })
 
     test('admin', async () => {
-      const params = {
+      const params: RegisterParams = {
         username: 'leslie',
         password: 'leslie',
         confirmPassword: 'leslie',
         permission: 'admin'
-      } as const
+      }
       const { status, body } = await testFn(params)
       const users = await querySelect({
         table: 'users',

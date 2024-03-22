@@ -3,7 +3,7 @@ import { queryInsert, useErrorReturn, useSuccessReturn, useTest } from '@/utils'
 describe('delete project', () => {
   const testFn = useTest('/project/1', 'delete')
 
-  describe('not login', () => {
+  describe('no permission', () => {
     it('not login', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(401)
@@ -12,16 +12,20 @@ describe('delete project', () => {
   })
 
   describe('normal permission', () => {
+    const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
+
     it('normal permission', async () => {
-      const { status, body } = await testFn(undefined, { id: 1, username: 'leslie', permission: 'normal' })
+      const { status, body } = await testFn(undefined, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
   })
 
   describe('admin permission', () => {
+    const userInfo = { id: 1, username: 'leslie', permission: 'admin' } as const
+
     it('admin permission', async () => {
-      const { status, body } = await testFn(undefined, { id: 1, username: 'leslie', permission: 'admin' })
+      const { status, body } = await testFn(undefined, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
@@ -29,7 +33,6 @@ describe('delete project', () => {
 
   describe('super admin permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'superAdmin' } as const
-
     const testInvalidId = useTest('/project/xxx', 'delete')
 
     test('invalid id', async () => {

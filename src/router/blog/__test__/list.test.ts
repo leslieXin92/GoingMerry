@@ -1,28 +1,31 @@
 import { useTest, queryInsert, useErrorReturn, useSuccessReturn } from '@/utils'
-import { VisibilityType, GetBlogListParams } from '@/types'
+import type { VisibilityType, GetBlogListParams } from '@/types'
 
 describe('get blog list', () => {
   const testFn = useTest<GetBlogListParams>('/blog', 'get')
 
-  test('no page', async () => {
-    const { status, body } = await testFn({ visibility: 'public' })
-    expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Page Cannot Be Empty!'))
-  })
+  describe('no permission', () => {
+    test('no page', async () => {
+      const params = { visibility: 'public' } as GetBlogListParams
+      const { status, body } = await testFn(params)
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Page Cannot Be Empty!'))
+    })
 
-  test('page is invalid', async () => {
-    const { status, body } = await testFn({ page: 'xxx', visibility: 'public' })
-    expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Page Is Invalid!'))
-  })
+    test('page is invalid', async () => {
+      const params = { page: 'xxx', visibility: 'public' } as GetBlogListParams
+      const { status, body } = await testFn(params)
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Page Is Invalid!'))
+    })
 
-  test('type is invalid', async () => {
-    const { status, body } = await testFn({ page: '1', visibility: 'otherType' as VisibilityType })
-    expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Visibility Is Invalid!'))
-  })
+    test('type is invalid', async () => {
+      const params = { page: '1', visibility: 'otherType' as VisibilityType }
+      const { status, body } = await testFn(params)
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Visibility Is Invalid!'))
+    })
 
-  describe('not login', () => {
     test('public list', async () => {
       await queryInsert({
         table: 'blogs',
@@ -36,7 +39,8 @@ describe('get blog list', () => {
           updatedBy: 1
         }
       })
-      const { status, body } = await testFn({ page: '1', visibility: 'public' })
+      const params: GetBlogListParams = { page: '1', visibility: 'public' }
+      const { status, body } = await testFn(params)
       expect(status).toBe(200)
       expect(body).toEqual(useSuccessReturn({
         blogList: expect.any(Array),
@@ -57,7 +61,8 @@ describe('get blog list', () => {
           updatedBy: 1
         }
       })
-      const { status, body } = await testFn({ page: '1', visibility: 'private' })
+      const params: GetBlogListParams = { page: '1', visibility: 'private' }
+      const { status, body } = await testFn(params)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
@@ -75,7 +80,8 @@ describe('get blog list', () => {
           updatedBy: 1
         }
       })
-      const { status, body } = await testFn({ page: '1', visibility: '' })
+      const params: GetBlogListParams = { page: '1', visibility: '' }
+      const { status, body } = await testFn(params)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
@@ -97,7 +103,8 @@ describe('get blog list', () => {
           updatedBy: 1
         }
       })
-      const { status, body } = await testFn({ page: '1', visibility: 'private' }, userInfo)
+      const params: GetBlogListParams = { page: '1', visibility: 'private' }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(200)
       expect(body).toEqual(useSuccessReturn({
         blogList: expect.any(Array),
@@ -118,7 +125,8 @@ describe('get blog list', () => {
           updatedBy: 1
         }
       })
-      const { status, body } = await testFn({ page: '1', visibility: '' }, userInfo)
+      const params: GetBlogListParams = { page: '1', visibility: '' }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(200)
       expect(body).toEqual(useSuccessReturn({
         blogList: expect.any(Array),

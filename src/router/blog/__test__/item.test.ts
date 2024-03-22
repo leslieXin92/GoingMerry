@@ -1,22 +1,22 @@
 import { useTest, useErrorReturn, useSuccessReturn, queryInsert } from '@/utils'
 
 describe('get blog item', () => {
-  const testInvalidId = useTest('/blog/testId', 'get')
-  test('invalid id', async () => {
-    const { status, body } = await testInvalidId()
-    expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
-  })
+  const testFn = useTest('/blog/1', 'get')
 
-  const testNotExist = useTest('/blog/1', 'get')
-  test('blog not exists', async () => {
-    const { status, body } = await testNotExist()
-    expect(status).toBe(400)
-    expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
-  })
+  describe('no permission', () => {
+    const testInvalidId = useTest('/blog/testId', 'get')
 
-  describe('not login', () => {
-    const testFn = useTest('/blog/1', 'get')
+    test('invalid id', async () => {
+      const { status, body } = await testInvalidId()
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
+    })
+
+    test('blog not exists', async () => {
+      const { status, body } = await testFn()
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
+    })
 
     test('view public blog', async () => {
       await queryInsert({
@@ -61,7 +61,6 @@ describe('get blog item', () => {
 
   describe('normal permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
-    const testFn = useTest('/blog/1', 'get')
 
     test('view public blog', async () => {
       await queryInsert({

@@ -1,10 +1,10 @@
 import { dateFormat, querySelect, useErrorReturn, useSuccessReturn, useTest } from '@/utils'
-import { ProjectItem } from '@/types'
+import type { CreateProjectParams, ProjectItem, ProjectStatus } from '@/types'
 
 describe('create project', () => {
-  const testFn = useTest('/project', 'post')
+  const testFn = useTest<CreateProjectParams>('/project', 'post')
 
-  describe('not login', () => {
+  describe('no permission', () => {
     it('not login', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(401)
@@ -16,11 +16,12 @@ describe('create project', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
 
     it('no name', async () => {
-      const { status, body } = await testFn({
+      const params: CreateProjectParams = {
         name: '',
         status: 'pending',
         startAt: 'test'
-      }, userInfo)
+      }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Name is required!'))
     })
@@ -28,7 +29,7 @@ describe('create project', () => {
     it('invalid status', async () => {
       const { status, body } = await testFn({
         name: 'test',
-        status: 'xxx',
+        status: 'xxx' as ProjectStatus,
         startAt: 'test'
       }, userInfo)
       expect(status).toBe(400)
@@ -36,17 +37,18 @@ describe('create project', () => {
     })
 
     it('invalid startAt', async () => {
-      const { status, body } = await testFn({
+      const params: CreateProjectParams = {
         name: 'test',
         status: 'pending',
         startAt: 'xxx'
-      }, userInfo)
+      }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Invalid startAt format (YYYY-MM-DD) !'))
     })
 
     it('create success', async () => {
-      const params = {
+      const params: CreateProjectParams = {
         name: 'name',
         technologyStack: [],
         description: 'description',

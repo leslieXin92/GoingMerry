@@ -1,10 +1,10 @@
 import { queryInsert, querySelect, useErrorReturn, useSuccessReturn, useTest } from '@/utils'
-import type { ProjectItem, UpdateProjectItemParams } from '@/types'
+import type { ProjectItem, ProjectStatus, UpdateProjectItemParams } from '@/types'
 
 describe('Update project', () => {
-  const testFn = useTest('/project/1', 'patch')
+  const testFn = useTest<UpdateProjectItemParams>('/project/1', 'patch')
 
-  describe('not login', () => {
+  describe('no permission', () => {
     it('not login', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(401)
@@ -13,22 +13,22 @@ describe('Update project', () => {
   })
 
   describe('normal permission', () => {
+    const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
+
     it('normal permission', async () => {
-      const params: UpdateProjectItemParams = {
-        name: 'name'
-      }
-      const { status, body } = await testFn(params, { id: 1, username: 'leslie', permission: 'normal' })
+      const params: UpdateProjectItemParams = { name: 'name' }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
   })
 
   describe('admin permission', () => {
+    const userInfo = { id: 1, username: 'leslie', permission: 'admin' } as const
+
     it('admin permission', async () => {
-      const params: UpdateProjectItemParams = {
-        name: 'name'
-      }
-      const { status, body } = await testFn(params, { id: 1, username: 'leslie', permission: 'admin' })
+      const params: UpdateProjectItemParams = { name: 'name' }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
@@ -36,17 +36,16 @@ describe('Update project', () => {
 
   describe('super admin permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'superAdmin' } as const
-
     const testInvalidId = useTest<UpdateProjectItemParams>('/project/xxx', 'patch')
 
-    it('Invalid id', async () => {
-      const { status, body } = await testInvalidId({}, userInfo)
+    it('invalid id', async () => {
+      const { status, body } = await testInvalidId(undefined, userInfo)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Name is required!'))
     })
 
     it('no name', async () => {
-      const params = {
+      const params: UpdateProjectItemParams = {
         name: '',
         technologyStack: [],
         description: 'description',
@@ -63,7 +62,7 @@ describe('Update project', () => {
         name: 'name',
         technologyStack: [],
         description: 'description',
-        status: 'xxx',
+        status: 'xxx' as ProjectStatus,
         startAt: '2024-03-21',
         doneAt: '2024-03-22'
       }
@@ -73,7 +72,7 @@ describe('Update project', () => {
     })
 
     it('invalid startAt', async () => {
-      const params = {
+      const params: UpdateProjectItemParams = {
         name: 'name',
         technologyStack: [],
         description: 'description',
@@ -86,7 +85,7 @@ describe('Update project', () => {
     })
 
     it('project not exists', async () => {
-      const params = {
+      const params: UpdateProjectItemParams = {
         name: 'name',
         technologyStack: [],
         description: 'description',
@@ -112,7 +111,7 @@ describe('Update project', () => {
           updatedBy: 1
         }
       })
-      const params = {
+      const params: UpdateProjectItemParams = {
         name: 'name',
         technologyStack: [],
         description: 'description',
@@ -139,7 +138,7 @@ describe('Update project', () => {
           updatedBy: 1
         }
       })
-      const params = {
+      const params: UpdateProjectItemParams = {
         name: 'name',
         technologyStack: ['a', 'b', 'c'],
         description: 'description',

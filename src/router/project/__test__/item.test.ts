@@ -4,13 +4,13 @@ describe('get project item', () => {
   const testInvalidId = useTest('/project/xxx', 'get')
   const testFn = useTest('/project/1', 'get')
 
-  it('Invalid id ', async () => {
+  it('invalid id ', async () => {
     const { status, body } = await testInvalidId()
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
   })
 
-  it('Project is not exists', async () => {
+  it('project not exists', async () => {
     const { status, body } = await testFn()
     expect(status).toBe(400)
     expect(body).toEqual(useErrorReturn('Project Dose Not Exists!'))

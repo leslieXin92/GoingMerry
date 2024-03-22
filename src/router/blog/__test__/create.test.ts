@@ -4,7 +4,7 @@ import type { VisibilityType, CreateBlogParams } from '@/types'
 describe('create blog', () => {
   const testFn = useTest<CreateBlogParams>('/blog', 'post')
 
-  describe('not login', () => {
+  describe('no permission', () => {
     test('not login', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(401)

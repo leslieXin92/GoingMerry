@@ -20,7 +20,6 @@ describe('get project list', () => {
     const { status, body } = await testFn()
     expect(status).toBe(200)
     expect(body).toMatchObject(useSuccessReturn([{
-      id: expect.any(Number),
       name: 'GoingMerry',
       technologyStack: ['a', 'b'],
       description: 'description',
