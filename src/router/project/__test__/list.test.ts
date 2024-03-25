@@ -9,6 +9,7 @@ describe('get project list', () => {
       data: {
         name: 'GoingMerry',
         technologyStack: ['a', 'b'],
+        coverIcon: 'coverIcon',
         description: 'description',
         status: 'doing',
         startAt: new Date('2024-03-20'),
@@ -21,6 +22,7 @@ describe('get project list', () => {
     expect(status).toBe(200)
     expect(body).toMatchObject(useSuccessReturn([{
       name: 'GoingMerry',
+      coverIcon: 'coverIcon',
       technologyStack: ['a', 'b'],
       description: 'description',
       status: 'doing'

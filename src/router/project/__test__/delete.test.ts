@@ -35,24 +35,25 @@ describe('delete project', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'superAdmin' } as const
     const testInvalidId = useTest('/project/xxx', 'delete')
 
-    test('invalid id', async () => {
+    it('invalid id', async () => {
       const { status, body } = await testInvalidId(undefined, userInfo)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
     })
 
-    test('project not exists', async () => {
+    it('project not exists', async () => {
       const { status, body } = await testFn(undefined, userInfo)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Project Dose Not Exists!'))
     })
 
-    test('delete success', async () => {
+    it('delete success', async () => {
       await queryInsert({
         table: 'projects',
         data: {
           id: 1,
           name: 'name',
+          coverIcon: 'coverIcon',
           status: 'pending',
           createdBy: 1,
           updatedBy: 1

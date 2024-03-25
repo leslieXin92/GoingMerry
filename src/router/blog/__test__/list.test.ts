@@ -5,28 +5,28 @@ describe('get blog list', () => {
   const testFn = useTest<GetBlogListParams>('/blog', 'get')
 
   describe('no permission', () => {
-    test('no page', async () => {
+    it('no page', async () => {
       const params = { visibility: 'public' } as GetBlogListParams
       const { status, body } = await testFn(params)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Page Cannot Be Empty!'))
     })
 
-    test('page is invalid', async () => {
+    it('page is invalid', async () => {
       const params = { page: 'xxx', visibility: 'public' } as GetBlogListParams
       const { status, body } = await testFn(params)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Page Is Invalid!'))
     })
 
-    test('type is invalid', async () => {
+    it('type is invalid', async () => {
       const params = { page: '1', visibility: 'otherType' as VisibilityType }
       const { status, body } = await testFn(params)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Visibility Is Invalid!'))
     })
 
-    test('public list', async () => {
+    it('public list', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -48,7 +48,7 @@ describe('get blog list', () => {
       }))
     })
 
-    test('private list', async () => {
+    it('private list', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -67,7 +67,7 @@ describe('get blog list', () => {
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
     })
 
-    test('full list', async () => {
+    it('full list', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -90,7 +90,7 @@ describe('get blog list', () => {
   describe('normal permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
 
-    test('private list', async () => {
+    it('private list', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -112,7 +112,7 @@ describe('get blog list', () => {
       }))
     })
 
-    test('full list', async () => {
+    it('full list', async () => {
       await queryInsert({
         table: 'blogs',
         data: {

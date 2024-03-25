@@ -16,7 +16,7 @@ describe('Update project', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
 
     it('normal permission', async () => {
-      const params: UpdateProjectItemParams = { name: 'name' }
+      const params: UpdateProjectItemParams = { name: 'name', coverIcon: 'coverIcon' }
       const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
@@ -27,7 +27,7 @@ describe('Update project', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'admin' } as const
 
     it('admin permission', async () => {
-      const params: UpdateProjectItemParams = { name: 'name' }
+      const params: UpdateProjectItemParams = { name: 'name', coverIcon: 'coverIcon' }
       const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
@@ -47,6 +47,7 @@ describe('Update project', () => {
     it('no name', async () => {
       const params: UpdateProjectItemParams = {
         name: '',
+        coverIcon: '',
         technologyStack: [],
         description: 'description',
         startAt: '2024-03-21',
@@ -57,9 +58,24 @@ describe('Update project', () => {
       expect(body).toEqual(useErrorReturn('Name is required!'))
     })
 
+    it('no cover icon', async () => {
+      const params: UpdateProjectItemParams = {
+        name: 'name',
+        coverIcon: '',
+        technologyStack: [],
+        description: 'description',
+        startAt: '2024-03-21',
+        doneAt: '2024-03-22'
+      }
+      const { status, body } = await testFn(params, userInfo)
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Cover icon is required!'))
+    })
+
     it('invalid status', async () => {
       const params = {
         name: 'name',
+        coverIcon: 'coverIcon',
         technologyStack: [],
         description: 'description',
         status: 'xxx' as ProjectStatus,
@@ -74,6 +90,7 @@ describe('Update project', () => {
     it('invalid startAt', async () => {
       const params: UpdateProjectItemParams = {
         name: 'name',
+        coverIcon: 'coverIcon',
         technologyStack: [],
         description: 'description',
         startAt: 'xxx',
@@ -87,6 +104,7 @@ describe('Update project', () => {
     it('project not exists', async () => {
       const params: UpdateProjectItemParams = {
         name: 'name',
+        coverIcon: 'coverIcon',
         technologyStack: [],
         description: 'description',
         startAt: '2024-03-21',
@@ -103,6 +121,7 @@ describe('Update project', () => {
         data: {
           id: 1,
           name: 'name',
+          coverIcon: 'coverIcon',
           technologyStack: [],
           description: 'description',
           startAt: '2024-03-21',
@@ -113,6 +132,7 @@ describe('Update project', () => {
       })
       const params: UpdateProjectItemParams = {
         name: 'name',
+        coverIcon: 'coverIcon',
         technologyStack: [],
         description: 'description',
         startAt: '2024-03-21',
@@ -129,6 +149,7 @@ describe('Update project', () => {
         data: {
           id: 1,
           name: 'name',
+          coverIcon: 'coverIcon',
           technologyStack: [],
           description: 'description',
           status: 'doing',
@@ -140,6 +161,7 @@ describe('Update project', () => {
       })
       const params: UpdateProjectItemParams = {
         name: 'name',
+        coverIcon: 'coverIcon',
         technologyStack: ['a', 'b', 'c'],
         description: 'description',
         status: 'doing',

@@ -1,5 +1,5 @@
 import { querySelect, queryInsert, queryUpdate, queryDelete } from '@/utils'
-import { BlogItem, CreateBlogParams, UpdateBlogItemParams, UserInfo } from '@/types'
+import type { BlogItem, CreateBlogParams, UpdateBlogItemParams, UserInfo } from '@/types'
 
 export const getBlogList = async () => {
   return await querySelect<Omit<BlogItem, 'content'>[]>({

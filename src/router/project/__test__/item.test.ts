@@ -22,6 +22,7 @@ describe('get project item', () => {
       data: {
         id: 1,
         name: 'GoingMerry',
+        coverIcon: 'coverIcon',
         technologyStack: ['a', 'b'],
         description: 'description',
         status: 'doing',
@@ -35,6 +36,7 @@ describe('get project item', () => {
     expect(body).toEqual(useSuccessReturn({
       id: 1,
       name: 'GoingMerry',
+      coverIcon: 'coverIcon',
       technologyStack: ['a', 'b'],
       description: 'description',
       status: 'doing',

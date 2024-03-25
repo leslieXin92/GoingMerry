@@ -5,7 +5,7 @@ describe('create blog', () => {
   const testFn = useTest<CreateBlogParams>('/blog', 'post')
 
   describe('no permission', () => {
-    test('not login', async () => {
+    it('not login', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(401)
       expect(body).toEqual(useErrorReturn('Unauthorized!'))
@@ -15,7 +15,7 @@ describe('create blog', () => {
   describe('normal permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
 
-    test('no title', async () => {
+    it('no title', async () => {
       const params: CreateBlogParams = {
         title: '',
         content: 'test',
@@ -26,7 +26,7 @@ describe('create blog', () => {
       expect(body).toEqual(useErrorReturn('Title Cannot Be Empty!'))
     })
 
-    test('no content', async () => {
+    it('no content', async () => {
       const params: CreateBlogParams = {
         title: 'title',
         content: '',
@@ -37,7 +37,7 @@ describe('create blog', () => {
       expect(body).toEqual(useErrorReturn('Content Cannot Be Empty!'))
     })
 
-    test('no visibility', async () => {
+    it('no visibility', async () => {
       const params = {
         title: 'title',
         content: 'content',
@@ -48,7 +48,7 @@ describe('create blog', () => {
       expect(body).toEqual(useErrorReturn('Visibility Cannot Be Empty!'))
     })
 
-    test('invalid visibility', async () => {
+    it('invalid visibility', async () => {
       const params = {
         title: 'title',
         content: 'content',
@@ -59,7 +59,7 @@ describe('create blog', () => {
       expect(body).toEqual(useErrorReturn('Visibility Is Invalid!'))
     })
 
-    test('create success', async () => {
+    it('create success', async () => {
       const params: CreateBlogParams = {
         title: 'title',
         content: 'content',

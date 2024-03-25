@@ -3,6 +3,7 @@ export type ProjectStatus = 'pending' | 'doing' | 'done'
 export interface ProjectItem {
   id: number
   name: string
+  coverIcon: string
   technologyStack: string[]
   description: string
   status: ProjectStatus
@@ -17,6 +18,7 @@ export interface ProjectItem {
 
 export interface CreateProjectParams {
   name: string
+  coverIcon: string
   technologyStack?: string[]
   description?: string
   status?: ProjectStatus
@@ -26,6 +28,7 @@ export interface CreateProjectParams {
 
 export interface UpdateProjectItemParams {
   name: string
+  coverIcon: string
   technologyStack?: string[]
   description?: string
   status?: ProjectStatus

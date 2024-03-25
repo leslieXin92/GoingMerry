@@ -26,15 +26,20 @@ export const handleCreateProject = async (ctx: Context) => {
 export const handleUpdateProject = async (ctx: Context) => {
   const { id } = ctx.params
   if (isNaN(parseInt(id))) return throwError(ctx, 'Id Is Invalid!', 400)
-  const beforeProjectItem = await getProjectItem(id)
-  if (!beforeProjectItem) return throwError(ctx, 'Project Dose Not Exists!', 400)
-  Object.entries(beforeProjectItem).forEach(([key, value]) => {
-    if (key.endsWith('At') && value) (beforeProjectItem as any)[key as keyof typeof beforeProjectItem] = dateFormat(value)
-  })
-  const afterProjectItem = ctx.request.body as UpdateProjectItemParams
-  if (isEqual(beforeProjectItem, afterProjectItem)) return throwError(ctx, 'No Change!', 400)
-  await updateProject({ ...afterProjectItem, id }, ctx.user)
-  ctx.body = useSuccessReturn(null, 'Update Success!')
+  try {
+
+    const beforeProjectItem = await getProjectItem(id)
+    if (!beforeProjectItem) return throwError(ctx, 'Project Dose Not Exists!', 400)
+    Object.entries(beforeProjectItem).forEach(([key, value]) => {
+      if (key.endsWith('At') && value) (beforeProjectItem as any)[key as keyof typeof beforeProjectItem] = dateFormat(value)
+    })
+    const afterProjectItem = ctx.request.body as UpdateProjectItemParams
+    if (isEqual(beforeProjectItem, afterProjectItem)) return throwError(ctx, 'No Change!', 400)
+    await updateProject({ ...afterProjectItem, id }, ctx.user)
+    ctx.body = useSuccessReturn(null, 'Update Success!')
+  } catch (e: any) {
+    console.log(e.message)
+  }
 }
 
 export const handleDeleteProject = async (ctx: Context) => {

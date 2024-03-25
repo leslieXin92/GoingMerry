@@ -1,5 +1,11 @@
 import { createPool, PoolConnection } from 'mysql2'
-import { MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD } from './config'
+import {
+  MYSQL_HOST,
+  MYSQL_PORT,
+  MYSQL_DATABASE,
+  MYSQL_USER,
+  MYSQL_PASSWORD
+} from './config'
 
 export const useDatabase = () => {
   const connection = createPool({

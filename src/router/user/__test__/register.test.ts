@@ -4,7 +4,7 @@ import type { RegisterParams } from '@/types'
 describe('register', () => {
   const testFn = useTest<RegisterParams>('/user/register', 'post')
 
-  test('no username', async () => {
+  it('no username', async () => {
     const params: RegisterParams = {
       username: '',
       password: 'leslie',
@@ -15,7 +15,7 @@ describe('register', () => {
     expect(body).toEqual(useErrorReturn('Username Cannot Be Empty!'))
   })
 
-  test('no password', async () => {
+  it('no password', async () => {
     const params: RegisterParams = {
       username: 'leslie',
       password: '',
@@ -26,7 +26,7 @@ describe('register', () => {
     expect(body).toEqual(useErrorReturn('Password Cannot Be Empty!'))
   })
 
-  test('no confirmPassword', async () => {
+  it('no confirmPassword', async () => {
     const params: RegisterParams = {
       username: 'leslie',
       password: 'leslie',
@@ -37,7 +37,7 @@ describe('register', () => {
     expect(body).toEqual(useErrorReturn('ConfirmPassword Cannot Be Empty!'))
   })
 
-  test('passwords are different', async () => {
+  it('passwords are different', async () => {
     const params: RegisterParams = {
       username: 'leslie',
       password: 'leslie',
@@ -48,7 +48,7 @@ describe('register', () => {
     expect(body).toEqual(useErrorReturn('Passwords Are Different!'))
   })
 
-  test('user already exists', async () => {
+  it('user already exists', async () => {
     await queryInsert({
       table: 'users',
       data: {
@@ -67,7 +67,7 @@ describe('register', () => {
   })
 
   describe('register successfully', () => {
-    test('normal', async () => {
+    it('normal', async () => {
       const params: RegisterParams = {
         username: 'leslie',
         password: 'leslie',
@@ -88,7 +88,7 @@ describe('register', () => {
       }])
     })
 
-    test('admin', async () => {
+    it('admin', async () => {
       const params: RegisterParams = {
         username: 'leslie',
         password: 'leslie',
