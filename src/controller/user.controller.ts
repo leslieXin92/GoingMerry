@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken'
 import { createUser } from '@/service'
-import { useErrorReturn, useSuccessReturn } from '@/utils'
+import { throwError, useSuccessReturn } from '@/utils'
 import { PRIVATE_KEY } from '@/app/config'
 import type { Context } from 'koa'
 import type { UserInfo, RegisterParams } from '@/types'
@@ -14,8 +14,7 @@ export const handleLogin = async (ctx: Context) => {
     })
     ctx.body = useSuccessReturn({ id, username, permission, token }, 'Login Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -25,7 +24,6 @@ export const handleRegister = async (ctx: Context) => {
     await createUser(username, password, permission)
     ctx.body = useSuccessReturn(null, 'Register Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }

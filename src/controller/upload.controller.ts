@@ -1,5 +1,5 @@
 import { savaPictureInfo } from '@/service'
-import { useErrorReturn, useSuccessReturn } from '@/utils'
+import { throwError, useSuccessReturn } from '@/utils'
 import { FILE_PATH } from '@/app/config'
 import type { Context } from 'koa'
 import type { IncomingMessage } from 'http'
@@ -12,7 +12,6 @@ export const handleSaveImageInfo = async (ctx: Context) => {
     await savaPictureInfo({ filename, mimetype, size }, ctx.user)
     ctx.body = useSuccessReturn({ imageUrl }, 'Save Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }

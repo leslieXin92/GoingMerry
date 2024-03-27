@@ -1,5 +1,5 @@
 import { getProjectList, getProjectItem, createProject, updateProject, deleteProject } from '@/service'
-import { dateFormat, isEqual, throwError, useErrorReturn, useSuccessReturn } from '@/utils'
+import { dateFormat, isEqual, throwError, useSuccessReturn } from '@/utils'
 import type { Context } from 'koa'
 import type { CreateProjectParams, UpdateProjectItemParams } from '@/types'
 
@@ -8,8 +8,7 @@ export const handleGetProjectList = async (ctx: Context) => {
     const projectList = await getProjectList()
     ctx.body = useSuccessReturn(projectList)
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -23,8 +22,7 @@ export const handleGetProjectItem = async (ctx: Context) => {
     })
     ctx.body = useSuccessReturn(projectItem)
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -33,8 +31,7 @@ export const handleCreateProject = async (ctx: Context) => {
     await createProject(ctx.request.body as CreateProjectParams, ctx.user)
     ctx.body = useSuccessReturn(null, 'Create success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -52,8 +49,7 @@ export const handleUpdateProject = async (ctx: Context) => {
     await updateProject({ ...afterProjectItem, id }, ctx.user)
     ctx.body = useSuccessReturn(null, 'Update Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -66,7 +62,6 @@ export const handleDeleteProject = async (ctx: Context) => {
     await deleteProject(id)
     ctx.body = useSuccessReturn(null, 'Delete Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }

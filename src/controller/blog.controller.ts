@@ -1,5 +1,5 @@
 import { getBlogList, getBlogItem, createBlog, updateBlog, deleteBlog } from '@/service'
-import { useSuccessReturn, throwError, isEqual, useErrorReturn } from '@/utils'
+import { useSuccessReturn, throwError, isEqual } from '@/utils'
 import type { Context } from 'koa'
 import type { GetBlogListParams, CreateBlogParams, UpdateBlogItemParams } from '@/types'
 
@@ -15,8 +15,7 @@ export const handleGetBlogList = async (ctx: Context) => {
       .slice((parseInt(page) - 1) * 10, parseInt(page) * 10)
     ctx.body = useSuccessReturn({ blogList, totalCount })
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -28,8 +27,7 @@ export const handleGetBlogItem = async (ctx: Context) => {
     if (blogItem.visibility === 'private' && !ctx.user) return throwError(ctx, 'Unauthorized!', 401)
     ctx.body = useSuccessReturn(blogItem)
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -38,8 +36,7 @@ export const handleCreateBlog = async (ctx: Context) => {
     await createBlog(ctx.request.body as CreateBlogParams, ctx.user)
     ctx.body = useSuccessReturn(null, 'Create Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -54,8 +51,7 @@ export const handleUpdateBlog = async (ctx: Context) => {
     await updateBlog({ ...afterBlogItem, id }, ctx.user)
     ctx.body = useSuccessReturn(null, 'Update Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
 
@@ -68,7 +64,6 @@ export const handleDeleteBlog = async (ctx: Context) => {
     await deleteBlog(id)
     ctx.body = useSuccessReturn(null, 'Delete Success!')
   } catch (e) {
-    ctx.status = 500
-    ctx.body = useErrorReturn((e as Error).message)
+    throwError(ctx, (e as Error).message, 500)
   }
 }
