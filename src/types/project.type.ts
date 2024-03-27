@@ -7,6 +7,8 @@ export interface ProjectItem {
   technologyStack: string[]
   description: string
   status: ProjectStatus
+  codeAddress?: string
+  onlineAddress?: string
   startAt: string
   doneAt: string
   doneBy: number
@@ -22,6 +24,8 @@ export interface CreateProjectParams {
   technologyStack?: string[]
   description?: string
   status?: ProjectStatus
+  codeAddress?: string
+  onlineAddress?: string
   startAt?: string
   doneAt?: string
 }
@@ -32,6 +36,8 @@ export interface UpdateProjectItemParams {
   technologyStack?: string[]
   description?: string
   status?: ProjectStatus
+  codeAddress?: string
+  onlineAddress?: string
   startAt?: string
   doneAt?: string
 }

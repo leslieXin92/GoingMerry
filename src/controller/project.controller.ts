@@ -48,7 +48,8 @@ export const handleUpdateProject = async (ctx: Context) => {
     if (isEqual(beforeProjectItem, afterProjectItem)) return throwError(ctx, 'No Change!', 400)
     await updateProject({ ...afterProjectItem, id }, ctx.user)
     ctx.body = useSuccessReturn(null, 'Update Success!')
-  } catch (e) {
+  } catch (e: any) {
+    const a = e.message
     throwError(ctx, (e as Error).message, 500)
   }
 }

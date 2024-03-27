@@ -1,5 +1,5 @@
 import { queryDelete, queryInsert, querySelect, queryUpdate } from '@/utils'
-import type { CreateProjectParams, ProjectItem, UpdateProjectItemParams, UserInfo } from '@/types'
+import { CreateProjectParams, ProjectItem, ProjectStatus, UpdateProjectItemParams, UserInfo } from '@/types'
 
 export const getProjectList = async () => {
   return await querySelect<ProjectItem[]>({
@@ -10,7 +10,9 @@ export const getProjectList = async () => {
       'coverIcon',
       'technologyStack',
       'description',
-      'status'
+      'status',
+      'codeAddress',
+      'onlineAddress'
     ]
   })
 }
@@ -27,7 +29,8 @@ export const getProjectItem = async (id: number) => {
       'description',
       'startAt',
       'status',
-      'createdAt'
+      'codeAddress',
+      'onlineAddress'
     ]
   })
   return projectList.length ? projectList[0] : null
@@ -40,6 +43,8 @@ export const createProject = async (params: CreateProjectParams, user: Omit<User
     technologyStack = [],
     description = null,
     status = 'pending',
+    codeAddress = null,
+    onlineAddress = null,
     startAt = null,
     doneAt = null
   } = params
@@ -53,6 +58,8 @@ export const createProject = async (params: CreateProjectParams, user: Omit<User
       technologyStack,
       description,
       status,
+      codeAddress,
+      onlineAddress,
       startAt,
       startBy,
       doneAt,
@@ -74,6 +81,8 @@ export const updateProject = async (
     technologyStack = [],
     description = null,
     status = 'pending',
+    codeAddress = null,
+    onlineAddress = null,
     startAt = null,
     doneAt = null
   } = params
@@ -84,6 +93,8 @@ export const updateProject = async (
     technologyStack,
     description,
     status,
+    codeAddress,
+    onlineAddress,
     updatedBy: user.id
   }
 
@@ -91,6 +102,8 @@ export const updateProject = async (
     case 'pending':
       update.startAt = null
       update.doneAt = null
+      update.codeAddress = null
+      update.onlineAddress = null
       break
 
     case 'doing':
