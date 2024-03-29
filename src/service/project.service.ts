@@ -12,7 +12,9 @@ export const getProjectList = async () => {
       'description',
       'status',
       'codeAddress',
-      'onlineAddress'
+      'onlineAddress',
+      'startAt',
+      'doneAt'
     ]
   })
 }
@@ -30,7 +32,9 @@ export const getProjectItem = async (id: number) => {
       'startAt',
       'status',
       'codeAddress',
-      'onlineAddress'
+      'onlineAddress',
+      'startAt',
+      'doneAt'
     ]
   })
   return projectList.length ? projectList[0] : null
