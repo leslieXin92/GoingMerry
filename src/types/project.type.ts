@@ -3,9 +3,12 @@ export type ProjectStatus = 'pending' | 'doing' | 'done'
 export interface ProjectItem {
   id: number
   name: string
+  coverIcon: string
   technologyStack: string[]
   description: string
   status: ProjectStatus
+  codeAddress?: string
+  onlineAddress?: string
   startAt: string
   doneAt: string
   doneBy: number
@@ -17,18 +20,24 @@ export interface ProjectItem {
 
 export interface CreateProjectParams {
   name: string
+  coverIcon: string
   technologyStack?: string[]
   description?: string
   status?: ProjectStatus
+  codeAddress?: string
+  onlineAddress?: string
   startAt?: string
   doneAt?: string
 }
 
 export interface UpdateProjectItemParams {
   name: string
+  coverIcon: string
   technologyStack?: string[]
   description?: string
   status?: ProjectStatus
+  codeAddress?: string
+  onlineAddress?: string
   startAt?: string
   doneAt?: string
 }

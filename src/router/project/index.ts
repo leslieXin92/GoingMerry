@@ -1,5 +1,10 @@
 import Router from 'koa-router'
-import { verifyAuth, verifyGetProjectItemParams, verifyCreateProjectParams, verifySuperAuth } from '@/middleware'
+import {
+  verifyAuth,
+  verifyGetProjectItemParams,
+  verifyCreateProjectParams,
+  verifySuperAuth
+} from '@/middleware'
 import {
   handleGetProjectList,
   handleGetProjectItem,

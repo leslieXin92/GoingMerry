@@ -70,8 +70,8 @@ export const verifyAuth = async (ctx: Context, next: Next) => {
     if (!user) return throwError(ctx, 'Unauthorized!', 401)
     ctx.user = user
     await next()
-  } catch (err) {
-    return throwError(ctx, 'Unauthorized!', 401)
+  } catch (e) {
+    return throwError(ctx, (e as Error).message, 401)
   }
 }
 

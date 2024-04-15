@@ -1,6 +1,6 @@
 import { throwError } from '@/utils'
 import type { Context, Next } from 'koa'
-import { CreateBlogParams, GetBlogListParams, UpdateBlogItemParams } from '@/types'
+import type { CreateBlogParams, GetBlogListParams } from '@/types'
 
 /**
  * Verify user submitted params for getting blog list

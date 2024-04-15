@@ -1,10 +1,21 @@
 import { queryDelete, queryInsert, querySelect, queryUpdate } from '@/utils'
-import { CreateProjectParams, ProjectItem, UpdateProjectItemParams, UserInfo } from '@/types'
+import { CreateProjectParams, ProjectItem, ProjectStatus, UpdateProjectItemParams, UserInfo } from '@/types'
 
 export const getProjectList = async () => {
   return await querySelect<ProjectItem[]>({
     table: 'projects',
-    columns: ['id', 'name', 'technologyStack', 'description', 'status']
+    columns: [
+      'id',
+      'name',
+      'coverIcon',
+      'technologyStack',
+      'description',
+      'status',
+      'codeAddress',
+      'onlineAddress',
+      'startAt',
+      'doneAt'
+    ]
   })
 }
 
@@ -12,22 +23,47 @@ export const getProjectItem = async (id: number) => {
   const projectList = await querySelect<ProjectItem[]>({
     table: 'projects',
     where: { id },
-    columns: ['id', 'name', 'technologyStack', 'description', 'startAt', 'status', 'createdAt']
+    columns: [
+      'id',
+      'name',
+      'coverIcon',
+      'technologyStack',
+      'description',
+      'startAt',
+      'status',
+      'codeAddress',
+      'onlineAddress',
+      'startAt',
+      'doneAt'
+    ]
   })
   return projectList.length ? projectList[0] : null
 }
 
 export const createProject = async (params: CreateProjectParams, user: Omit<UserInfo, 'password'>) => {
-  const { name, technologyStack, description, status = 'pending', startAt, doneAt } = params
+  const {
+    name,
+    coverIcon,
+    technologyStack = [],
+    description = null,
+    status = 'pending',
+    codeAddress = null,
+    onlineAddress = null,
+    startAt = null,
+    doneAt = null
+  } = params
   const startBy = status !== 'pending' ? user.id : null
   const doneBy = status === 'done' ? user.id : null
   await queryInsert({
     table: 'projects',
     data: {
       name,
+      coverIcon,
       technologyStack,
       description,
       status,
+      codeAddress,
+      onlineAddress,
       startAt,
       startBy,
       doneAt,
@@ -42,13 +78,27 @@ export const updateProject = async (
   params: UpdateProjectItemParams & { id: number },
   user: Omit<UserInfo, 'password'>
 ) => {
-  const { id, name, technologyStack, description, status, startAt, doneAt } = params
+  const {
+    id,
+    name,
+    coverIcon,
+    technologyStack = [],
+    description = null,
+    status = 'pending',
+    codeAddress = null,
+    onlineAddress = null,
+    startAt = null,
+    doneAt = null
+  } = params
 
   let update: Record<string, any> = {
     name,
+    coverIcon,
     technologyStack,
     description,
     status,
+    codeAddress,
+    onlineAddress,
     updatedBy: user.id
   }
 
@@ -56,6 +106,8 @@ export const updateProject = async (
     case 'pending':
       update.startAt = null
       update.doneAt = null
+      update.codeAddress = null
+      update.onlineAddress = null
       break
 
     case 'doing':

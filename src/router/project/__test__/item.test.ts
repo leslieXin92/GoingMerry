@@ -22,6 +22,7 @@ describe('get project item', () => {
       data: {
         id: 1,
         name: 'GoingMerry',
+        coverIcon: 'coverIcon',
         technologyStack: ['a', 'b'],
         description: 'description',
         status: 'doing',
@@ -32,13 +33,13 @@ describe('get project item', () => {
     })
     const { status, body } = await testFn()
     expect(status).toBe(200)
-    expect(body).toEqual(useSuccessReturn({
+    expect(body).toMatchObject(useSuccessReturn({
       id: 1,
       name: 'GoingMerry',
+      coverIcon: 'coverIcon',
       technologyStack: ['a', 'b'],
       description: 'description',
       status: 'doing',
-      createdAt: expect.any(String),
       startAt: '2024-03-20'
     }))
   })

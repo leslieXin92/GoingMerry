@@ -6,19 +6,19 @@ describe('get blog item', () => {
   describe('no permission', () => {
     const testInvalidId = useTest('/blog/testId', 'get')
 
-    test('invalid id', async () => {
+    it('invalid id', async () => {
       const { status, body } = await testInvalidId()
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Id Is Invalid!'))
     })
 
-    test('blog not exists', async () => {
+    it('blog not exists', async () => {
       const { status, body } = await testFn()
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Blog Dose Not Exists!'))
     })
 
-    test('view public blog', async () => {
+    it('view public blog', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -41,7 +41,7 @@ describe('get blog item', () => {
       }))
     })
 
-    test('view private blog', async () => {
+    it('view private blog', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -62,7 +62,7 @@ describe('get blog item', () => {
   describe('normal permission', () => {
     const userInfo = { id: 1, username: 'leslie', permission: 'normal' } as const
 
-    test('view public blog', async () => {
+    it('view public blog', async () => {
       await queryInsert({
         table: 'blogs',
         data: {
@@ -85,7 +85,7 @@ describe('get blog item', () => {
       }))
     })
 
-    test('view private blog', async () => {
+    it('view private blog', async () => {
       await queryInsert({
         table: 'blogs',
         data: {

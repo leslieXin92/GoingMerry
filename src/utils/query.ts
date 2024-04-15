@@ -1,5 +1,4 @@
 import { useDatabase } from '@/app/database'
-import { UserInfo } from '@/types'
 
 type Table = 'users' | 'blogs' | 'projects' | 'files'
 

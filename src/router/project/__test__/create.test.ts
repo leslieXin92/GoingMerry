@@ -18,6 +18,7 @@ describe('create project', () => {
     it('no name', async () => {
       const params: CreateProjectParams = {
         name: '',
+        coverIcon: 'coverIcon',
         status: 'pending',
         startAt: 'test'
       }
@@ -26,12 +27,26 @@ describe('create project', () => {
       expect(body).toEqual(useErrorReturn('Name is required!'))
     })
 
+    it('no coverIcon', async () => {
+      const params: CreateProjectParams = {
+        name: 'name',
+        status: 'pending',
+        startAt: 'test',
+        coverIcon: ''
+      }
+      const { status, body } = await testFn(params, userInfo)
+      expect(status).toBe(400)
+      expect(body).toEqual(useErrorReturn('Cover icon is required!'))
+    })
+
     it('invalid status', async () => {
-      const { status, body } = await testFn({
+      const params = {
         name: 'test',
         status: 'xxx' as ProjectStatus,
-        startAt: 'test'
-      }, userInfo)
+        startAt: 'test',
+        coverIcon: 'coverIcon'
+      }
+      const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(400)
       expect(body).toEqual(useErrorReturn('Status Is Invalid!'))
     })
@@ -40,7 +55,8 @@ describe('create project', () => {
       const params: CreateProjectParams = {
         name: 'test',
         status: 'pending',
-        startAt: 'xxx'
+        startAt: 'xxx',
+        coverIcon: 'coverIcon'
       }
       const { status, body } = await testFn(params, userInfo)
       expect(status).toBe(400)
@@ -50,6 +66,7 @@ describe('create project', () => {
     it('create success', async () => {
       const params: CreateProjectParams = {
         name: 'name',
+        coverIcon: 'coverIcon',
         technologyStack: [],
         description: 'description',
         startAt: '2024-03-21',
@@ -59,7 +76,7 @@ describe('create project', () => {
       const projectList = await querySelect<ProjectItem[]>({
         table: 'projects',
         where: { name: params.name },
-        columns: ['id', 'name', 'technologyStack', 'description', 'startAt', 'doneAt']
+        columns: ['id', 'name', 'coverIcon', 'technologyStack', 'description', 'startAt', 'doneAt']
       })
       const project = projectList[0]
       Object.entries(project).forEach(([key, value]) => {
