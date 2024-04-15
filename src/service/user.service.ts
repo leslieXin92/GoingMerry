@@ -11,7 +11,7 @@ export const getUserInfo = async (username: string): Promise<UserInfo | null> =>
 }
 
 export const createUser = async (username: string, password: string, permission: UserPermissionType) => {
-  const a = await queryInsert({
+  await queryInsert({
     table: 'users',
     data: {
       username,
@@ -19,5 +19,13 @@ export const createUser = async (username: string, password: string, permission:
       permission
     }
   })
-  console.log(a)
+}
+
+export const getUser = async (id: number) => {
+  const users = await querySelect<UserInfo[]>({
+    table: 'users',
+    where: { id },
+    columns: ['username', 'permission']
+  })
+  return users.length ? users[0] : null
 }
