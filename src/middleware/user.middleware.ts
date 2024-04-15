@@ -4,7 +4,7 @@ import { throwError, encrypt } from '@/utils'
 import { PUBLIC_KEY } from '@/app/config'
 import type { Context, Next } from 'koa'
 import type { JwtPayload } from 'jsonwebtoken'
-import type { LoginParams, RegisterParams } from '@/types'
+import type { AutoLoginParamsParams, LoginParams, RegisterParams } from '@/types'
 
 /**
  * Verify user's submitting params for login
@@ -31,6 +31,14 @@ export const verifyRegisterParams = async (ctx: Context, next: Next) => {
   if (password !== confirmPassword) return throwError(ctx, 'Passwords Are Different!', 400)
   const user = await getUserInfo(username)
   if (user) return throwError(ctx, 'User Has Already Exists!', 409)
+  await next()
+}
+
+export const verifyAutoLoginParams = async (ctx: Context, next: Next) => {
+  const { username, id, permission } = ctx.request.body as Partial<AutoLoginParamsParams>
+  if (!username) return throwError(ctx, 'Username Cannot Be Empty!', 400)
+  if (!id) return throwError(ctx, 'Id Cannot Be Empty!', 400)
+  if (!permission) return throwError(ctx, 'Permission Cannot Be Empty!', 400)
   await next()
 }
 

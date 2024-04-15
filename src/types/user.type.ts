@@ -18,3 +18,9 @@ export interface RegisterParams {
   confirmPassword: string
   permission?: UserPermissionType
 }
+
+export interface AutoLoginParamsParams {
+  id: number
+  username: string
+  permission: UserPermissionType
+}

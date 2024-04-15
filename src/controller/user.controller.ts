@@ -1,9 +1,9 @@
 import { sign } from 'jsonwebtoken'
-import { createUser } from '@/service'
-import { throwError, useSuccessReturn } from '@/utils'
+import { createUser, getUser } from '@/service'
+import { throwError, useErrorReturn, useSuccessReturn } from '@/utils'
 import { PRIVATE_KEY } from '@/app/config'
 import type { Context } from 'koa'
-import type { UserInfo, RegisterParams } from '@/types'
+import type { UserInfo, RegisterParams, AutoLoginParamsParams } from '@/types'
 
 export const handleLogin = async (ctx: Context) => {
   try {
@@ -25,5 +25,19 @@ export const handleRegister = async (ctx: Context) => {
     ctx.body = useSuccessReturn(null, 'Register Success!')
   } catch (e) {
     throwError(ctx, (e as Error).message, 500)
+  }
+}
+
+export const handleAutoLogin = async (ctx: Context) => {
+  const { username, id, permission } = ctx.request.body as AutoLoginParamsParams
+  const user = await getUser(id)
+  if (user && user.username === username && user.permission === permission) {
+    const token = sign({ id, username, permission }, PRIVATE_KEY, {
+      expiresIn: 60 * 60 * 24,
+      algorithm: 'RS384'
+    })
+    ctx.body = useSuccessReturn({ id, username, permission, token }, 'Auto Login Success!')
+  } else {
+    ctx.body = useErrorReturn('Auto Login Failed!')
   }
 }
